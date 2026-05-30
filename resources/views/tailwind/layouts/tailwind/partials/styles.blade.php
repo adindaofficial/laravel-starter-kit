@@ -36,6 +36,28 @@
         color: #172554;
     }
 
+    .starter-sidebar-scroll {
+        scrollbar-color: rgba(191, 219, 254, .45) transparent;
+        scrollbar-width: thin;
+    }
+
+    .starter-sidebar-scroll::-webkit-scrollbar {
+        width: .45rem;
+    }
+
+    .starter-sidebar-scroll::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .starter-sidebar-scroll::-webkit-scrollbar-thumb {
+        background: rgba(191, 219, 254, .35);
+        border-radius: 999px;
+    }
+
+    .starter-sidebar-scroll::-webkit-scrollbar-thumb:hover {
+        background: rgba(191, 219, 254, .55);
+    }
+
     .dt-container {
         color: #334155;
         width: 100%;
