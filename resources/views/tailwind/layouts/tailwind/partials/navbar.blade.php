@@ -1,43 +1,41 @@
-<nav class="sticky top-0 z-30 border-b border-zinc-200 bg-white">
+<nav class="sticky top-0 z-30 border-b border-slate-200 bg-white">
     <div class="flex min-h-16 items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
         <div class="flex min-w-0 items-center gap-3">
-            <a href="{{ url('/') }}" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-zinc-900 text-white lg:hidden">
-                <i data-lucide="layout-dashboard" class="h-5 w-5"></i>
-            </a>
+            <button type="button" id="starterMobileOpen" class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 lg:hidden" aria-label="Open navigation">
+                <i data-lucide="menu" class="h-5 w-5"></i>
+            </button>
+
             <div class="min-w-0">
                 <div class="truncate text-sm font-semibold">{{ config('app.name', 'Laravel') }}</div>
-                <div class="truncate text-xs text-zinc-500">Tailwind UI</div>
+                <div class="truncate text-xs text-slate-500">Tailwind UI</div>
             </div>
         </div>
 
-        <div class="flex items-center gap-2">
-            <a href="{{ url('/users') }}" class="inline-flex h-9 items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 text-sm font-medium text-zinc-700 hover:bg-zinc-50 lg:hidden">
-                <i data-lucide="users" class="h-4 w-4"></i>
-                <span>Users</span>
-            </a>
+        <div class="hidden min-w-0 flex-1 justify-center md:flex">
+            <label class="flex h-10 w-full max-w-md items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 text-slate-500">
+                <i data-lucide="search" class="h-4 w-4"></i>
+                <input type="search" class="min-w-0 flex-1 bg-transparent text-sm text-slate-800 outline-none placeholder:text-slate-400" placeholder="Search" aria-label="Search">
+            </label>
+        </div>
 
-            <button type="button" id="starterNavbarAlert" class="inline-flex h-9 items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 text-sm font-medium text-zinc-700 hover:bg-zinc-50">
+        <div class="flex items-center gap-2">
+            <button type="button" id="starterNavbarAlert" class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50" title="Notifications">
                 <i data-lucide="bell" class="h-4 w-4"></i>
-                <span>Notify</span>
             </button>
 
-            @auth
-                <span class="hidden text-sm text-zinc-500 sm:inline">{{ auth()->user()->name }}</span>
-            @endauth
+            <button type="button" class="hidden h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 sm:inline-flex" title="Shortcuts">
+                <i data-lucide="zap" class="h-4 w-4"></i>
+            </button>
+
+            <div class="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-2 py-1">
+                <span class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-blue-700">
+                    <i data-lucide="user" class="h-4 w-4"></i>
+                </span>
+                <span class="hidden text-left sm:block">
+                    <span class="block text-sm font-semibold leading-tight">@auth {{ auth()->user()->name }} @else Administrator @endauth</span>
+                    <span class="block text-xs leading-tight text-slate-500">Dashboard</span>
+                </span>
+            </div>
         </div>
     </div>
 </nav>
-
-@push('scripts')
-    <script>
-        document.getElementById('starterNavbarAlert')?.addEventListener('click', function () {
-            Swal.fire({
-                icon: 'success',
-                title: 'Ready',
-                text: 'Starter kit aktif.',
-                timer: 1400,
-                showConfirmButton: false
-            });
-        });
-    </script>
-@endpush

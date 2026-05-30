@@ -46,7 +46,7 @@ class InstallCommand extends Command
         $this->info('Laravel Starter Kit installed.');
         $this->line('Next steps:');
         $this->line('  php artisan migrate');
-        $this->line('  php artisan db:seed --class=UserSeeder');
+        $this->line('  php artisan db:seed');
         $this->line('  Visit /users');
 
         return self::SUCCESS;

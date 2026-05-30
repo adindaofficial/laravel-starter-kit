@@ -18,7 +18,35 @@ resources/
           UserController.php
   views/
     bootstrap/
+      components/
+      layouts/
+        bootstrap/
+          app.blade.php
+          partials/
+            footer.blade.php
+            mobile-sidebar.blade.php
+            nav-items.blade.php
+            navbar.blade.php
+            page-header.blade.php
+            scripts.blade.php
+            sidebar.blade.php
+            styles.blade.php
+      users/
     tailwind/
+      components/
+      layouts/
+        tailwind/
+          app.blade.php
+          partials/
+            footer.blade.php
+            mobile-sidebar.blade.php
+            nav-items.blade.php
+            navbar.blade.php
+            page-header.blade.php
+            scripts.blade.php
+            sidebar.blade.php
+            styles.blade.php
+      users/
 routes/
   starter-kit.php
 src/
@@ -44,7 +72,7 @@ Jika package ini berada di folder terpisah dari project Laravel:
 
 ```bash
 composer config repositories.laravel-starter-kit path "../laravel-starter-kit"
-composer require winnicode/laravel-starter-kit:@dev
+composer require mwy/laravel-starter-kit:@dev
 ```
 
 ## Jalankan Installer
@@ -88,7 +116,7 @@ Jalankan migrasi dan seeder:
 
 ```bash
 php artisan migrate
-php artisan db:seed --class=UserSeeder
+php artisan db:seed
 ```
 
 Buka halaman:
@@ -102,9 +130,11 @@ Buka halaman:
 - `app/Http/Controllers/UserController.php`
 - `routes/starter-kit.php`
 - `resources/views/layouts/bootstrap/*` atau `resources/views/layouts/tailwind/*`
+- asset layout seperti Bootstrap/Tailwind, icons, DataTables, SweetAlert, custom CSS, dan JS berada di `resources/views/layouts/{stack}/partials`
 - `resources/views/components/bootstrap/*` atau `resources/views/components/tailwind/*`
 - `resources/views/users/index.blade.php`
 - `database/seeders/UserSeeder.php`
+- `database/seeders/DatabaseSeeder.php` akan ditambahkan `$this->call(UserSeeder::class);`
 - `routes/web.php` akan memuat `routes/starter-kit.php`
 
 ## Struktur Project Setelah Install
@@ -116,6 +146,7 @@ app/
       UserController.php
 database/
   seeders/
+    DatabaseSeeder.php
     UserSeeder.php
 resources/
   views/
@@ -126,8 +157,13 @@ resources/
         app.blade.php
         partials/
           footer.blade.php
+          mobile-sidebar.blade.php
+          nav-items.blade.php
           navbar.blade.php
+          page-header.blade.php
+          scripts.blade.php
           sidebar.blade.php
+          styles.blade.php
     users/
       index.blade.php
 routes/

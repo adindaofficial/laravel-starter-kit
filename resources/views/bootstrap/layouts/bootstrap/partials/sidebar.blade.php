@@ -1,21 +1,32 @@
-<aside class="starter-sidebar d-none d-lg-flex flex-column p-3">
-    <a href="{{ url('/') }}" class="d-flex align-items-center gap-2 text-white text-decoration-none mb-4">
-        <span class="d-inline-flex align-items-center justify-content-center rounded bg-white text-dark" style="height: 2.25rem; width: 2.25rem;">
-            <i class="bi bi-grid-1x2-fill"></i>
-        </span>
-        <span class="fw-semibold">{{ config('app.name', 'Laravel') }}</span>
-    </a>
-
-    <nav class="nav nav-pills flex-column">
-        <a href="{{ url('/') }}" class="nav-link {{ request()->is('/') ? 'active' : '' }}">
-            <i class="bi bi-speedometer2 me-2"></i>Dashboard
+<aside class="starter-sidebar d-none d-lg-flex flex-column">
+    <div class="starter-brand">
+        <a href="{{ url('/') }}" class="d-flex align-items-center gap-3 text-white text-decoration-none">
+            <span class="starter-brand-icon">
+                <i class="bi bi-grid-1x2-fill"></i>
+            </span>
+            <span class="min-w-0">
+                <span class="d-block fw-semibold text-truncate">{{ config('app.name', 'Laravel') }}</span>
+                <span class="d-block small text-blue-100">Starter Kit</span>
+            </span>
         </a>
-        <a href="{{ url('/users') }}" class="nav-link {{ request()->is('users') ? 'active' : '' }}">
-            <i class="bi bi-people me-2"></i>Users
-        </a>
-    </nav>
+    </div>
 
-    <div class="mt-auto small text-white-50">
-        Laravel Starter Kit
+    <div class="starter-sidebar-section">
+        <div class="starter-sidebar-label">Menu</div>
+        <nav class="nav flex-column starter-sidebar-nav">
+            @include('layouts.bootstrap.partials.nav-items')
+        </nav>
+    </div>
+
+    <div class="starter-sidebar-section mt-auto">
+        <div class="starter-sidebar-card">
+            <span class="starter-sidebar-card-icon">
+                <i class="bi bi-shield-check"></i>
+            </span>
+            <span>
+                <span class="d-block fw-semibold">Protected</span>
+                <span class="d-block small">Laravel Starter Kit</span>
+            </span>
+        </div>
     </div>
 </aside>

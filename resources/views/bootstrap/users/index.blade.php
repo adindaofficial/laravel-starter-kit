@@ -1,6 +1,18 @@
 @extends('layouts.bootstrap.app')
 
 @section('title', 'Users')
+@section('page-kicker', 'Management')
+@section('page-title', 'Users')
+@section('page-subtitle', 'Kelola data pengguna dengan DataTables, status verifikasi, dan ringkasan cepat.')
+
+@section('page-actions')
+    <button type="button" class="btn btn-outline-primary">
+        <i class="bi bi-download me-2"></i>Export
+    </button>
+    <button type="button" class="btn btn-primary" id="usersPageAlert">
+        <i class="bi bi-bell me-2"></i>Notify
+    </button>
+@endsection
 
 @section('content')
     @php
@@ -8,17 +20,6 @@
         $verifiedUsers = $users->filter(fn ($user) => ! is_null($user->email_verified_at))->count();
         $newUsers = $users->filter(fn ($user) => optional($user->created_at)->greaterThanOrEqualTo(now()->subDays(30)))->count();
     @endphp
-
-    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-4">
-        <div>
-            <div class="text-secondary small text-uppercase fw-semibold">Management</div>
-            <h1 class="h3 mb-0">Users</h1>
-        </div>
-
-        <button type="button" class="btn btn-primary" id="usersPageAlert">
-            <i class="bi bi-bell me-2"></i>Notify
-        </button>
-    </div>
 
     <div class="row g-3 mb-4">
         <div class="col-md-4">
@@ -32,7 +33,16 @@
         </div>
     </div>
 
-    <div class="card border-0 shadow-sm">
+    <div class="card starter-table-card border-0 shadow-sm">
+        <div class="card-header d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2 py-3">
+            <div>
+                <h2 class="h6 fw-bold mb-1">User Directory</h2>
+                <p class="text-secondary small mb-0">DataTable responsive dengan pencarian, pagination, dan sorting.</p>
+            </div>
+            <span class="badge text-bg-primary-subtle text-primary-emphasis">
+                <i class="bi bi-database me-1"></i>{{ $totalUsers }} records
+            </span>
+        </div>
         <div class="card-body">
             <div class="table-responsive">
                 <table id="usersTable" class="table table-striped table-hover align-middle nowrap w-100">
@@ -78,13 +88,7 @@
             });
 
             document.getElementById('usersPageAlert')?.addEventListener('click', function () {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Users loaded',
-                    text: 'Data user sudah dimuat.',
-                    timer: 1500,
-                    showConfirmButton: false
-                });
+                window.StarterKit.toast('Users loaded', 'Data user sudah dimuat.');
             });
         });
     </script>
