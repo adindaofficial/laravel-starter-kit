@@ -1,10 +1,10 @@
 <?php
 
-namespace Winnicode\LaravelStarterKit;
+namespace Mwy\LaravelStarterKit;
 
 use Illuminate\Support\ServiceProvider;
-use Winnicode\LaravelStarterKit\Console\InstallCommand;
-use Winnicode\LaravelStarterKit\Console\StaterKitInstallCommand;
+use Mwy\LaravelStarterKit\Console\InstallCommand;
+use Mwy\LaravelStarterKit\Console\StaterKitInstallCommand;
 
 class LaravelStarterKitServiceProvider extends ServiceProvider
 {

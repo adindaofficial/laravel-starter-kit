@@ -1,11 +1,11 @@
 <?php
 
-namespace Winnicode\LaravelStarterKit\Console;
+namespace Mwy\LaravelStarterKit\Console;
 
 use Illuminate\Console\Command;
 use InvalidArgumentException;
-use Winnicode\LaravelStarterKit\Services\StarterKitInstaller;
-use Winnicode\LaravelStarterKit\Support\Stack;
+use Mwy\LaravelStarterKit\Services\StarterKitInstaller;
+use Mwy\LaravelStarterKit\Support\Stack;
 
 class InstallCommand extends Command
 {

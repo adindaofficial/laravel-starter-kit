@@ -1,6 +1,6 @@
 <?php
 
-namespace Winnicode\LaravelStarterKit\Console;
+namespace Mwy\LaravelStarterKit\Console;
 
 class StaterKitInstallCommand extends InstallCommand
 {

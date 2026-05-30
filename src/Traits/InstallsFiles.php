@@ -1,6 +1,6 @@
 <?php
 
-namespace Winnicode\LaravelStarterKit\Traits;
+namespace Mwy\LaravelStarterKit\Traits;
 
 use Illuminate\Filesystem\Filesystem;
 

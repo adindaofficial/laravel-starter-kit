@@ -1,6 +1,6 @@
 <?php
 
-namespace Winnicode\LaravelStarterKit\Support;
+namespace Mwy\LaravelStarterKit\Support;
 
 use InvalidArgumentException;
 

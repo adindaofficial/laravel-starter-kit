@@ -1,9 +1,9 @@
 <?php
 
-namespace Winnicode\LaravelStarterKit\Services;
+namespace Mwy\LaravelStarterKit\Services;
 
 use Illuminate\Filesystem\Filesystem;
-use Winnicode\LaravelStarterKit\Traits\InstallsFiles;
+use Mwy\LaravelStarterKit\Traits\InstallsFiles;
 
 class StarterKitInstaller
 {
