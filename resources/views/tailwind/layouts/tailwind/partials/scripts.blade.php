@@ -175,10 +175,6 @@
             });
         });
 
-        document.getElementById('starterNavbarAlert')?.addEventListener('click', function () {
-            window.StarterKit.toast('Ready', 'Starter kit aktif.');
-        });
-
         @if (session('status'))
             window.StarterKit.toast('Berhasil', @json(session('status')));
         @endif

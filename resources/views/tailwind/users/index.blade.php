@@ -36,14 +36,10 @@
                         <i data-lucide="table-2" class="h-5 w-5"></i>
                     </span>
                     <div>
-                        <h2 class="text-base font-bold text-slate-950">User Directory</h2>
-                        <p class="mt-1 text-sm text-slate-500">DataTables dengan search, page length, pagination, dan action modal.</p>
+                        <h2 class="text-base font-bold text-slate-950">Users</h2>
+                        <p class="mt-1 text-sm text-slate-500">Kelola data pengguna dengan DataTables dan action modal.</p>
                     </div>
                 </div>
-                <span class="inline-flex w-fit items-center gap-2 rounded-full border border-blue-100 bg-white px-3 py-1.5 text-xs font-semibold text-blue-700 shadow-sm">
-                    <i data-lucide="database" class="h-3.5 w-3.5"></i>
-                    {{ $totalUsers }} records
-                </span>
             </div>
 
             <div class="p-4">
