@@ -41,6 +41,37 @@
                     }
                 }
             }, options));
+        },
+        openModal: function (id) {
+            const modal = document.getElementById(id);
+
+            if (! modal) {
+                return;
+            }
+
+            modal.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+
+            requestAnimationFrame(function () {
+                modal.querySelector('[data-starter-modal-backdrop]')?.classList.remove('opacity-0');
+                modal.querySelector('[data-starter-modal-panel]')?.classList.remove('opacity-0', 'scale-95', 'translate-y-2');
+            });
+        },
+        closeModal: function (modal) {
+            if (! modal) {
+                return;
+            }
+
+            modal.querySelector('[data-starter-modal-backdrop]')?.classList.add('opacity-0');
+            modal.querySelector('[data-starter-modal-panel]')?.classList.add('opacity-0', 'scale-95', 'translate-y-2');
+
+            setTimeout(function () {
+                modal.classList.add('hidden');
+
+                if (! document.querySelector('[data-starter-modal]:not(.hidden)')) {
+                    document.body.classList.remove('overflow-hidden');
+                }
+            }, 160);
         }
     };
 
@@ -77,8 +108,35 @@
             button.addEventListener('click', closeSidebar);
         });
 
+        document.addEventListener('click', function (event) {
+            const close = event.target.closest('[data-starter-modal-close]');
+            const backdrop = event.target.closest('[data-starter-modal-backdrop]');
+
+            if (close) {
+                window.StarterKit.closeModal(close.closest('[data-starter-modal]'));
+            }
+
+            if (backdrop) {
+                window.StarterKit.closeModal(backdrop.closest('[data-starter-modal]'));
+            }
+        });
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key !== 'Escape') {
+                return;
+            }
+
+            document.querySelectorAll('[data-starter-modal]:not(.hidden)').forEach(function (modal) {
+                window.StarterKit.closeModal(modal);
+            });
+        });
+
         document.getElementById('starterNavbarAlert')?.addEventListener('click', function () {
             window.StarterKit.toast('Ready', 'Starter kit aktif.');
         });
+
+        @if (session('status'))
+            window.StarterKit.toast('Berhasil', @json(session('status')));
+        @endif
     });
 </script>

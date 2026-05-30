@@ -4,14 +4,15 @@
     'icon' => 'bar-chart',
 ])
 
-<div {{ $attributes->class(['rounded-lg', 'border', 'border-slate-200', 'bg-white', 'p-4', 'shadow-sm']) }}>
+<div {{ $attributes->class(['group', 'relative', 'overflow-hidden', 'rounded-lg', 'border', 'border-slate-200', 'bg-white', 'p-4', 'shadow-sm', 'transition', 'hover:-translate-y-0.5', 'hover:shadow-panel']) }}>
+    <div class="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue-500 to-blue-700"></div>
     <div class="flex items-center gap-3">
-        <div class="flex h-11 w-11 items-center justify-center rounded-lg bg-blue-50 text-blue-700">
+        <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-50 text-blue-700 ring-1 ring-blue-100">
             <i data-lucide="{{ $icon }}" class="h-5 w-5"></i>
         </div>
-        <div>
-            <div class="text-sm text-slate-500">{{ $label }}</div>
-            <div class="text-2xl font-semibold leading-none text-slate-950">{{ $value }}</div>
+        <div class="min-w-0">
+            <div class="truncate text-sm font-medium text-slate-500">{{ $label }}</div>
+            <div class="mt-1 text-2xl font-bold leading-none text-slate-950">{{ $value }}</div>
         </div>
     </div>
 </div>

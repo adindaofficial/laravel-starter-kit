@@ -1,6 +1,6 @@
 # Laravel Tailwind Starter Kit
 
-Package starter-kit Laravel berbasis Tailwind CSS untuk membuat layout dashboard, halaman `/users`, DataTables, icon library, SweetAlert2, controller, route, dan seeder secara otomatis.
+Package starter-kit Laravel berbasis Tailwind CSS untuk membuat layout dashboard, halaman `/users`, DataTables, modal action, icon library, SweetAlert2, controller, route, dan seeder secara otomatis.
 
 ## Struktur Package
 
@@ -104,6 +104,12 @@ Buka halaman:
 /users
 ```
 
+Halaman Users sudah memakai DataTables dan menyediakan action berbasis modal:
+
+- Reset password
+- Edit user
+- Delete user
+
 ## File Yang Dipasang
 
 - `app/Http/Controllers/UserController.php`
@@ -111,7 +117,7 @@ Buka halaman:
 - `resources/views/layouts/tailwind/*`
 - asset layout seperti Tailwind CSS, Lucide icons, DataTables, SweetAlert, custom CSS, dan JS berada di `resources/views/layouts/tailwind/partials`
 - `resources/views/components/tailwind/*`
-- `resources/views/users/index.blade.php`
+- `resources/views/users/index.blade.php` dengan DataTables dan modal action
 - `database/seeders/UserSeeder.php`
 - `database/seeders/DatabaseSeeder.php` akan ditambahkan `$this->call(UserSeeder::class);`
 - `routes/web.php` akan memuat `routes/starter-kit.php`
