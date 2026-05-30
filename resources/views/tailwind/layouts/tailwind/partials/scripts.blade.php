@@ -1,3 +1,4 @@
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
 <script src="https://cdn.datatables.net/responsive/3.0.2/js/dataTables.responsive.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -17,13 +18,14 @@
         dataTable: function (selector, options = {}) {
             const table = document.querySelector(selector);
 
-            if (! table || typeof DataTable === 'undefined') {
+            if (! table) {
                 return null;
             }
 
-            return new DataTable(selector, Object.assign({
+            const finalOptions = Object.assign({
                 destroy: true,
                 info: true,
+                lengthChange: true,
                 ordering: true,
                 paging: true,
                 pagingType: 'simple_numbers',
@@ -31,6 +33,7 @@
                 searching: true,
                 pageLength: 10,
                 lengthMenu: [5, 10, 25, 50, 100],
+                dom: '<"starter-dt-toolbar"lf>rt<"starter-dt-footer"ip>',
                 layout: {
                     topStart: 'pageLength',
                     topEnd: 'search',
@@ -48,11 +51,38 @@
                     paginate: {
                         first: 'Pertama',
                         last: 'Terakhir',
-                        next: 'Selanjutnya',
-                        previous: 'Sebelumnya'
+                        next: 'Next',
+                        previous: 'Prev'
                     }
                 }
-            }, options));
+            }, options);
+
+            if (window.jQuery && window.jQuery.fn && window.jQuery.fn.DataTable) {
+                return window.jQuery(selector).DataTable(finalOptions);
+            }
+
+            if (typeof DataTable !== 'undefined') {
+                return new DataTable(selector, finalOptions);
+            }
+
+            console.error('DataTables library is not loaded.');
+
+            return null;
+        },
+        initDataTables: function () {
+            document.querySelectorAll('.starter-datatable').forEach(function (table) {
+                if (table.dataset.datatableReady === '1') {
+                    return;
+                }
+
+                table.dataset.datatableReady = '1';
+                window.StarterKit.dataTable('#' + table.id, {
+                    order: [[0, 'asc']],
+                    columnDefs: [
+                        { targets: table.querySelectorAll('thead th').length - 1, orderable: false, searchable: false }
+                    ]
+                });
+            });
         },
         openModal: function (id) {
             const modal = document.getElementById(id);
@@ -119,6 +149,8 @@
         closeButtons.forEach(function (button) {
             button.addEventListener('click', closeSidebar);
         });
+
+        window.StarterKit.initDataTables();
 
         document.addEventListener('click', function (event) {
             const close = event.target.closest('[data-starter-modal-close]');

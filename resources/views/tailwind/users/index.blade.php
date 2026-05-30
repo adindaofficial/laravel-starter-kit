@@ -289,14 +289,6 @@
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            window.StarterKit.dataTable('#usersTable', {
-                order: [[0, 'asc']],
-                columnDefs: [
-                    { targets: 0, width: '5rem' },
-                    { targets: 5, orderable: false, searchable: false }
-                ]
-            });
-
             document.getElementById('usersPageAlert')?.addEventListener('click', function () {
                 window.StarterKit.toast('Users loaded', 'Data user sudah dimuat.');
             });
