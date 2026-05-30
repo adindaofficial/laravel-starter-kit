@@ -24,10 +24,7 @@ resources/
           app.blade.php
           partials/
             footer.blade.php
-            mobile-sidebar.blade.php
-            nav-items.blade.php
             navbar.blade.php
-            page-header.blade.php
             scripts.blade.php
             sidebar.blade.php
             styles.blade.php
@@ -131,6 +128,7 @@ Buka halaman:
 - `routes/starter-kit.php`
 - `resources/views/layouts/bootstrap/*` atau `resources/views/layouts/tailwind/*`
 - asset layout seperti Bootstrap/Tailwind, icons, DataTables, SweetAlert, custom CSS, dan JS berada di `resources/views/layouts/{stack}/partials`
+- khusus Bootstrap, partial layout disederhanakan ke `footer`, `navbar`, `sidebar`, `scripts`, dan `styles`
 - `resources/views/components/bootstrap/*` atau `resources/views/components/tailwind/*`
 - `resources/views/users/index.blade.php`
 - `database/seeders/UserSeeder.php`
@@ -153,7 +151,15 @@ resources/
     components/
       bootstrap/ atau tailwind/
     layouts/
-      bootstrap/ atau tailwind/
+      bootstrap/
+        app.blade.php
+        partials/
+          footer.blade.php
+          navbar.blade.php
+          scripts.blade.php
+          sidebar.blade.php
+          styles.blade.php
+      tailwind/
         app.blade.php
         partials/
           footer.blade.php

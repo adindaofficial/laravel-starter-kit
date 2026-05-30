@@ -2,12 +2,12 @@
 
 @section('title', 'Users')
 @section('page-kicker', 'Management')
-@section('page-title', 'Users')
-@section('page-subtitle', 'Kelola data pengguna dengan DataTables, status verifikasi, dan ringkasan cepat.')
+@section('page-title', 'Manajemen Users')
+@section('page-subtitle', 'Tabel user menggunakan DataTables dengan pencarian, pagination, sorting, dan tampilan responsive.')
 
 @section('page-actions')
-    <button type="button" class="btn btn-outline-primary">
-        <i class="bi bi-download me-2"></i>Export
+    <button type="button" class="btn btn-outline-primary" onclick="window.location.reload()">
+        <i class="bi bi-arrow-clockwise me-2"></i>Refresh
     </button>
     <button type="button" class="btn btn-primary" id="usersPageAlert">
         <i class="bi bi-bell me-2"></i>Notify
@@ -35,9 +35,14 @@
 
     <div class="card starter-table-card border-0 shadow-sm">
         <div class="card-header d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2 py-3">
-            <div>
-                <h2 class="h6 fw-bold mb-1">User Directory</h2>
-                <p class="text-secondary small mb-0">DataTable responsive dengan pencarian, pagination, dan sorting.</p>
+            <div class="d-flex align-items-start gap-3">
+                <span class="starter-table-icon">
+                    <i class="bi bi-table"></i>
+                </span>
+                <div>
+                    <h2 class="h6 fw-bold mb-1">User Directory</h2>
+                    <p class="text-secondary small mb-0">DataTable responsive dengan pencarian, pagination, dan sorting.</p>
+                </div>
             </div>
             <span class="badge text-bg-primary-subtle text-primary-emphasis">
                 <i class="bi bi-database me-1"></i>{{ $totalUsers }} records
@@ -45,7 +50,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table id="usersTable" class="table table-striped table-hover align-middle nowrap w-100">
+                <table id="usersTable" class="table table-hover align-middle nowrap w-100 starter-datatable">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -81,10 +86,12 @@
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            new DataTable('#usersTable', {
+            window.StarterKit.dataTable('#usersTable', {
                 order: [[0, 'asc']],
-                pageLength: 10,
-                responsive: true
+                columnDefs: [
+                    { targets: 0, width: '5rem' },
+                    { targets: 3, orderable: false }
+                ]
             });
 
             document.getElementById('usersPageAlert')?.addEventListener('click', function () {

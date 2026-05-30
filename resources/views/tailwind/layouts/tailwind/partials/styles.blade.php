@@ -53,10 +53,28 @@
 
     .dt-container .dt-paging-button.current {
         background: #2563eb !important;
+        border-color: #2563eb !important;
         color: #ffffff !important;
     }
 
     .dt-container table.dataTable thead th {
         border-bottom: 1px solid #cbd5e1;
+    }
+
+    .dt-container table.dataTable tbody td {
+        border-color: #e2e8f0;
+        padding-bottom: .85rem;
+        padding-top: .85rem;
+    }
+
+    .dt-container .dt-search label,
+    .dt-container .dt-length label,
+    .dt-container .dt-info {
+        color: #64748b;
+        font-size: .875rem;
+    }
+
+    .dt-container .dt-search input {
+        min-width: min(18rem, 70vw);
     }
 </style>

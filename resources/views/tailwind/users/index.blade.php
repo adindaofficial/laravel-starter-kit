@@ -2,13 +2,13 @@
 
 @section('title', 'Users')
 @section('page-kicker', 'Management')
-@section('page-title', 'Users')
-@section('page-subtitle', 'Kelola data pengguna dengan DataTables, status verifikasi, dan ringkasan cepat.')
+@section('page-title', 'Manajemen Users')
+@section('page-subtitle', 'Tabel user menggunakan DataTables dengan pencarian, pagination, sorting, dan tampilan responsive.')
 
 @section('page-actions')
-    <button type="button" class="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-blue-200 bg-white px-4 text-sm font-semibold text-blue-700 hover:bg-blue-50">
-        <i data-lucide="download" class="h-4 w-4"></i>
-        <span>Export</span>
+    <button type="button" onclick="window.location.reload()" class="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-blue-200 bg-white px-4 text-sm font-semibold text-blue-700 hover:bg-blue-50">
+        <i data-lucide="refresh-cw" class="h-4 w-4"></i>
+        <span>Refresh</span>
     </button>
     <button type="button" id="usersPageAlert" class="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 text-sm font-semibold text-white hover:bg-blue-700">
         <i data-lucide="bell" class="h-4 w-4"></i>
@@ -32,9 +32,14 @@
 
         <div class="rounded-lg border border-slate-200 bg-white shadow-sm">
             <div class="flex flex-col gap-2 border-b border-slate-200 p-4 md:flex-row md:items-center md:justify-between">
-                <div>
-                    <h2 class="text-sm font-bold text-slate-950">User Directory</h2>
-                    <p class="text-sm text-slate-500">DataTable responsive dengan pencarian, pagination, dan sorting.</p>
+                <div class="flex items-start gap-3">
+                    <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-700">
+                        <i data-lucide="table-2" class="h-5 w-5"></i>
+                    </span>
+                    <div>
+                        <h2 class="text-sm font-bold text-slate-950">User Directory</h2>
+                        <p class="text-sm text-slate-500">DataTable responsive dengan pencarian, pagination, dan sorting.</p>
+                    </div>
                 </div>
                 <span class="inline-flex w-fit items-center gap-2 rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">
                     <i data-lucide="database" class="h-3.5 w-3.5"></i>
@@ -44,7 +49,7 @@
 
             <div class="p-4">
             <div class="overflow-x-auto">
-                <table id="usersTable" class="w-full min-w-[760px] text-left text-sm">
+                <table id="usersTable" class="starter-datatable w-full min-w-[760px] text-left text-sm">
                     <thead>
                         <tr class="border-b border-slate-200 text-xs uppercase text-slate-500">
                             <th class="px-3 py-3">ID</th>
@@ -81,10 +86,12 @@
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            new DataTable('#usersTable', {
+            window.StarterKit.dataTable('#usersTable', {
                 order: [[0, 'asc']],
-                pageLength: 10,
-                responsive: true
+                columnDefs: [
+                    { targets: 0, width: '5rem' },
+                    { targets: 3, orderable: false }
+                ]
             });
 
             document.getElementById('usersPageAlert')?.addEventListener('click', function () {

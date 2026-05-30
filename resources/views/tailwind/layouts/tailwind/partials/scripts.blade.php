@@ -13,6 +13,34 @@
                 timer: 1600,
                 showConfirmButton: false
             });
+        },
+        dataTable: function (selector, options = {}) {
+            const table = document.querySelector(selector);
+
+            if (! table || typeof DataTable === 'undefined') {
+                return null;
+            }
+
+            return new DataTable(selector, Object.assign({
+                responsive: true,
+                pageLength: 10,
+                lengthMenu: [5, 10, 25, 50, 100],
+                language: {
+                    search: 'Cari:',
+                    lengthMenu: 'Tampilkan _MENU_ data',
+                    info: 'Menampilkan _START_ sampai _END_ dari _TOTAL_ data',
+                    infoEmpty: 'Tidak ada data',
+                    infoFiltered: '(difilter dari _MAX_ total data)',
+                    zeroRecords: 'Data tidak ditemukan',
+                    emptyTable: 'Tidak ada data tersedia',
+                    paginate: {
+                        first: 'Pertama',
+                        last: 'Terakhir',
+                        next: 'Selanjutnya',
+                        previous: 'Sebelumnya'
+                    }
+                }
+            }, options));
         }
     };
 

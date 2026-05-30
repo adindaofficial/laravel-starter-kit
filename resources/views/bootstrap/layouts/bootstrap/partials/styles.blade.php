@@ -17,7 +17,9 @@
     }
 
     .starter-body {
-        background: #f4f7fb;
+        background:
+            radial-gradient(circle at top right, rgba(37, 99, 235, .10), transparent 28rem),
+            #f4f7fb;
         color: #1f2937;
     }
 
@@ -115,6 +117,7 @@
     }
 
     .starter-topbar {
+        backdrop-filter: blur(16px);
         border-bottom: 1px solid var(--starter-border);
         min-height: 4.25rem;
         z-index: 1020;
@@ -184,6 +187,7 @@
         border-radius: .5rem;
         margin-bottom: 1.25rem;
         padding: 1.25rem;
+        box-shadow: 0 .75rem 1.5rem rgba(15, 23, 42, .04);
     }
 
     .starter-page-kicker {
@@ -203,8 +207,34 @@
     }
 
     .starter-table-card .card-header {
-        background: #ffffff;
+        background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
         border-color: var(--starter-border);
+    }
+
+    .starter-table-icon {
+        align-items: center;
+        background: var(--starter-primary-soft);
+        border-radius: .5rem;
+        color: var(--starter-primary);
+        display: inline-flex;
+        flex-shrink: 0;
+        height: 2.5rem;
+        justify-content: center;
+        width: 2.5rem;
+    }
+
+    .starter-datatable thead th {
+        background: #f8fafc;
+        color: #334155;
+        font-size: .78rem;
+        font-weight: 800;
+        text-transform: uppercase;
+    }
+
+    .starter-datatable tbody td {
+        border-color: #edf2f7;
+        padding-bottom: .85rem;
+        padding-top: .85rem;
     }
 
     .dataTables_wrapper .dataTables_filter input,
@@ -213,6 +243,12 @@
         border: 1px solid var(--starter-border) !important;
         border-radius: .5rem !important;
         min-height: 2.375rem;
+    }
+
+    .dt-container .dt-layout-row {
+        align-items: center;
+        gap: .875rem;
+        margin-bottom: 1rem;
     }
 
     .page-link,
