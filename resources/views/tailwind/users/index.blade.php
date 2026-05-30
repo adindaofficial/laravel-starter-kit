@@ -58,8 +58,7 @@
             </div>
 
             <div class="p-4">
-                <div class="overflow-x-auto">
-                    <table id="usersTable" class="starter-datatable w-full min-w-[820px] text-left text-sm">
+                <table id="usersTable" class="starter-datatable w-full min-w-[820px] text-left text-sm">
                         <thead>
                             <tr>
                                 <th class="px-3 py-3">ID</th>
@@ -142,8 +141,7 @@
                                 </tr>
                             @endforeach
                         </tbody>
-                    </table>
-                </div>
+                </table>
             </div>
         </div>
     </div>

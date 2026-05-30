@@ -22,9 +22,21 @@
             }
 
             return new DataTable(selector, Object.assign({
+                destroy: true,
+                info: true,
+                ordering: true,
+                paging: true,
+                pagingType: 'simple_numbers',
                 responsive: true,
+                searching: true,
                 pageLength: 10,
                 lengthMenu: [5, 10, 25, 50, 100],
+                layout: {
+                    topStart: 'pageLength',
+                    topEnd: 'search',
+                    bottomStart: 'info',
+                    bottomEnd: 'paging'
+                },
                 language: {
                     search: 'Cari:',
                     lengthMenu: 'Tampilkan _MENU_ data',
