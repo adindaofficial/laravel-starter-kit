@@ -5,17 +5,6 @@
 @section('page-title', 'Manajemen Users')
 @section('page-subtitle', 'Kelola user melalui tabel DataTables lengkap dengan pencarian, pagination, sorting, dan status verifikasi.')
 
-@section('page-actions')
-    <button type="button" onclick="window.location.reload()" class="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-blue-200 bg-white px-4 text-sm font-semibold text-blue-700 shadow-sm hover:bg-blue-50">
-        <i data-lucide="refresh-cw" class="h-4 w-4"></i>
-        <span>Refresh</span>
-    </button>
-    <button type="button" id="usersPageAlert" class="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 text-sm font-semibold text-white shadow-sm shadow-blue-600/20 hover:bg-blue-700">
-        <i data-lucide="bell" class="h-4 w-4"></i>
-        <span>Notify</span>
-    </button>
-@endsection
-
 @section('content')
     @php
         $totalUsers = $users->count();
@@ -40,18 +29,18 @@
             <x-tailwind.stat-card label="Last 30 days" :value="$newUsers" icon="calendar-days" />
         </div>
 
-        <div class="rounded-lg border border-slate-200 bg-white shadow-panel">
-            <div class="flex flex-col gap-3 border-b border-slate-200 bg-gradient-to-r from-white to-blue-50 p-4 md:flex-row md:items-center md:justify-between">
+        <div class="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-panel">
+            <div class="flex flex-col gap-3 border-b border-slate-200 bg-gradient-to-r from-white via-blue-50 to-white p-5 md:flex-row md:items-center md:justify-between">
                 <div class="flex items-start gap-3">
-                    <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-700">
+                    <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-blue-600 text-white shadow-lg shadow-blue-600/20">
                         <i data-lucide="table-2" class="h-5 w-5"></i>
                     </span>
                     <div>
-                        <h2 class="text-sm font-bold text-slate-950">User Directory</h2>
-                        <p class="text-sm text-slate-500">DataTable responsive dengan pencarian, pagination, dan sorting.</p>
+                        <h2 class="text-base font-bold text-slate-950">User Directory</h2>
+                        <p class="mt-1 text-sm text-slate-500">DataTables dengan search, page length, pagination, dan action modal.</p>
                     </div>
                 </div>
-                <span class="inline-flex w-fit items-center gap-2 rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">
+                <span class="inline-flex w-fit items-center gap-2 rounded-full border border-blue-100 bg-white px-3 py-1.5 text-xs font-semibold text-blue-700 shadow-sm">
                     <i data-lucide="database" class="h-3.5 w-3.5"></i>
                     {{ $totalUsers }} records
                 </span>
@@ -289,10 +278,6 @@
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            document.getElementById('usersPageAlert')?.addEventListener('click', function () {
-                window.StarterKit.toast('Users loaded', 'Data user sudah dimuat.');
-            });
-
             document.addEventListener('click', function (event) {
                 const editButton = event.target.closest('[data-user-edit]');
                 const resetButton = event.target.closest('[data-user-reset]');

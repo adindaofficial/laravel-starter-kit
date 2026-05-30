@@ -50,7 +50,7 @@
     .starter-dt-toolbar,
     .starter-dt-footer {
         align-items: center;
-        background: #ffffff;
+        background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
         border: 1px solid #e2e8f0;
         border-radius: .75rem;
         display: flex;
@@ -58,6 +58,7 @@
         gap: 1rem;
         justify-content: space-between;
         padding: .85rem;
+        box-shadow: 0 8px 20px rgba(15, 23, 42, .03);
     }
 
     .starter-dt-toolbar {
@@ -100,6 +101,7 @@
         border-radius: .5rem;
         min-height: 2.375rem;
         padding: .375rem .75rem;
+        transition: border-color .15s ease, box-shadow .15s ease;
     }
 
     .dt-container .dt-input:focus,
@@ -124,6 +126,7 @@
         color: #334155 !important;
         margin: 0 .125rem;
         padding: .35rem .65rem !important;
+        transition: background .15s ease, border-color .15s ease, color .15s ease;
     }
 
     .dt-container .dt-paging-button:hover,
