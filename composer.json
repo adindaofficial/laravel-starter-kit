@@ -1,17 +1,17 @@
 {
-    "name": "winnicode/laravel-starter-kit",
+    "name": "mwy/laravel-starter-kit",
     "description": "Laravel starter kit package with Bootstrap or Tailwind layouts, users page, DataTables, icons, SweetAlert, and seeders.",
     "type": "library",
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Winnicode\\LaravelStarterKit\\": "src/"
+            "Mwy\\LaravelStarterKit\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Winnicode\\LaravelStarterKit\\LaravelStarterKitServiceProvider"
+                "Mwy\\LaravelStarterKit\\LaravelStarterKitServiceProvider"
             ]
         }
     },
