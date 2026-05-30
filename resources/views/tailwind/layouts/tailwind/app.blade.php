@@ -10,7 +10,7 @@
     @stack('styles')
 </head>
 <body class="min-h-screen bg-slate-100 text-slate-900 antialiased">
-    <div class="min-h-screen lg:flex">
+    <div class="min-h-screen bg-[linear-gradient(180deg,#f8fbff_0%,#eef4ff_42%,#f8fafc_100%)] lg:flex">
         @include('layouts.tailwind.partials.mobile-sidebar')
         @include('layouts.tailwind.partials.sidebar')
 

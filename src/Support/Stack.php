@@ -6,21 +6,18 @@ use InvalidArgumentException;
 
 final class Stack
 {
-    public const BOOTSTRAP = 'bootstrap';
-
     public const TAILWIND = 'tailwind';
 
     public static function available(): array
     {
         return config('starter-kit.stacks', [
-            self::BOOTSTRAP,
             self::TAILWIND,
         ]);
     }
 
     public static function default(): string
     {
-        return config('starter-kit.default_stack', self::BOOTSTRAP);
+        return config('starter-kit.default_stack', self::TAILWIND);
     }
 
     public static function normalize(?string $stack): string
@@ -32,7 +29,7 @@ final class Stack
         }
 
         if (! in_array($stack, self::available(), true)) {
-            throw new InvalidArgumentException('Invalid stack. Use bootstrap or tailwind.');
+            throw new InvalidArgumentException('Invalid stack. This starter kit only supports tailwind.');
         }
 
         return $stack;

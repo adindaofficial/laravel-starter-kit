@@ -6,8 +6,11 @@
 @endphp
 
 @foreach ($items as $item)
-    <a href="{{ $item['url'] }}" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold {{ $item['active'] ? 'bg-white text-blue-800 shadow-sm' : 'text-blue-50 hover:bg-white/10 hover:text-white' }}">
+    <a href="{{ $item['url'] }}" class="group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold transition {{ $item['active'] ? 'bg-white text-blue-800 shadow-sm' : 'text-blue-50 hover:bg-white/10 hover:text-white' }}" @if ($item['active']) aria-current="page" @endif>
         <i data-lucide="{{ $item['icon'] }}" class="h-4 w-4"></i>
-        <span>{{ $item['label'] }}</span>
+        <span class="flex-1">{{ $item['label'] }}</span>
+        @if ($item['active'])
+            <span class="h-2 w-2 rounded-full bg-blue-600"></span>
+        @endif
     </a>
 @endforeach

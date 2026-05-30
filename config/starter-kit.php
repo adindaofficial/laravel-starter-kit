@@ -6,14 +6,13 @@ return [
     | Default UI Stack
     |--------------------------------------------------------------------------
     |
-    | Supported values: bootstrap, tailwind.
+    | Supported values: tailwind.
     |
     */
 
-    'default_stack' => 'bootstrap',
+    'default_stack' => 'tailwind',
 
     'stacks' => [
-        'bootstrap',
         'tailwind',
     ],
 ];

@@ -1,6 +1,6 @@
 {
     "name": "mwy/laravel-starter-kit",
-    "description": "Laravel starter kit package with Bootstrap or Tailwind layouts, users page, DataTables, icons, SweetAlert, and seeders.",
+    "description": "Laravel Tailwind starter kit package with layouts, users page, DataTables, icons, SweetAlert, and seeders.",
     "type": "library",
     "license": "MIT",
     "autoload": {

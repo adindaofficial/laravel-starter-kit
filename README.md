@@ -1,6 +1,6 @@
-# Laravel Starter Kit
+# Laravel Tailwind Starter Kit
 
-Package starter-kit Laravel untuk membuat layout, halaman `/users`, DataTables, icon library, SweetAlert2, dan `UserSeeder` secara otomatis.
+Package starter-kit Laravel berbasis Tailwind CSS untuk membuat layout dashboard, halaman `/users`, DataTables, icon library, SweetAlert2, controller, route, dan seeder secara otomatis.
 
 ## Struktur Package
 
@@ -17,18 +17,6 @@ resources/
         Controllers/
           UserController.php
   views/
-    bootstrap/
-      components/
-      layouts/
-        bootstrap/
-          app.blade.php
-          partials/
-            footer.blade.php
-            navbar.blade.php
-            scripts.blade.php
-            sidebar.blade.php
-            styles.blade.php
-      users/
     tailwind/
       components/
       layouts/
@@ -86,15 +74,9 @@ Command dengan ejaan yang benar juga tersedia:
 php artisan starter-kit:install
 ```
 
-Installer akan meminta pilihan stack:
-
-- `bootstrap`
-- `tailwind`
-
-Untuk langsung memilih stack:
+Package ini hanya mendukung Tailwind CSS. Opsi `--stack=tailwind` tetap tersedia jika ingin eksplisit:
 
 ```bash
-php artisan stater-kit:install --stack=bootstrap
 php artisan stater-kit:install --stack=tailwind
 ```
 
@@ -126,10 +108,9 @@ Buka halaman:
 
 - `app/Http/Controllers/UserController.php`
 - `routes/starter-kit.php`
-- `resources/views/layouts/bootstrap/*` atau `resources/views/layouts/tailwind/*`
-- asset layout seperti Bootstrap/Tailwind, icons, DataTables, SweetAlert, custom CSS, dan JS berada di `resources/views/layouts/{stack}/partials`
-- khusus Bootstrap, partial layout disederhanakan ke `footer`, `navbar`, `sidebar`, `scripts`, dan `styles`
-- `resources/views/components/bootstrap/*` atau `resources/views/components/tailwind/*`
+- `resources/views/layouts/tailwind/*`
+- asset layout seperti Tailwind CSS, Lucide icons, DataTables, SweetAlert, custom CSS, dan JS berada di `resources/views/layouts/tailwind/partials`
+- `resources/views/components/tailwind/*`
 - `resources/views/users/index.blade.php`
 - `database/seeders/UserSeeder.php`
 - `database/seeders/DatabaseSeeder.php` akan ditambahkan `$this->call(UserSeeder::class);`
@@ -149,16 +130,8 @@ database/
 resources/
   views/
     components/
-      bootstrap/ atau tailwind/
+      tailwind/
     layouts/
-      bootstrap/
-        app.blade.php
-        partials/
-          footer.blade.php
-          navbar.blade.php
-          scripts.blade.php
-          sidebar.blade.php
-          styles.blade.php
       tailwind/
         app.blade.php
         partials/
