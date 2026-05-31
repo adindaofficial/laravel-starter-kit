@@ -229,13 +229,15 @@ laravel-starter-kit/
 │   ├── Console/
 │   │   ├── InstallCommand.php       # Main install command
 │   │   └── StaterKitInstallCommand.php
+│   ├── Providers/
+│   │   └── LaravelStarterKitServiceProvider.php
 │   ├── Services/
 │   │   └── StarterKitInstaller.php  # Installation service
 │   ├── Support/
+│   │   ├── LegacyAliases.php        # Backward compatibility aliases
 │   │   └── Stack.php                # Stack management
 │   ├── Traits/
 │   │   └── InstallsFiles.php        # File installation utilities
-│   └── LaravelStarterKitServiceProvider.php
 ├── composer.json
 └── README.md
 ```

@@ -6,12 +6,15 @@
     "autoload": {
         "psr-4": {
             "Mwy\\LaravelStarterKit\\": "src/"
-        }
+        },
+        "files": [
+            "src/Support/LegacyAliases.php"
+        ]
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Mwy\\LaravelStarterKit\\LaravelStarterKitServiceProvider"
+                "Mwy\\LaravelStarterKit\\Providers\\LaravelStarterKitServiceProvider"
             ]
         }
     },
