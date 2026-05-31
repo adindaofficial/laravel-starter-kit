@@ -55,17 +55,17 @@
             </div>
 
             <div class="p-4">
-                <table id="usersTable" class="starter-datatable table-fixed w-full min-w-[700px] text-left text-sm">
+                <table id="usersTable" class="starter-datatable starter-users-table w-full min-w-[660px] table-fixed text-left text-sm">
                         <colgroup>
-                            <col style="width: 4.75rem;">
-                            <col style="width: 28%;">
-                            <col style="width: 34%;">
-                            <col style="width: 20%;">
-                            <col style="width: 9.75rem;">
+                            <col style="width: 4.25rem;">
+                            <col style="width: 30%;">
+                            <col style="width: 32%;">
+                            <col style="width: 18%;">
+                            <col style="width: 9.5rem;">
                         </colgroup>
                         <thead>
                             <tr>
-                                <th class="px-3 py-3">No</th>
+                                <th class="px-3 py-3 text-center">No</th>
                                 <th class="px-3 py-3">Nama</th>
                                 <th class="px-3 py-3">Email</th>
                                 <th class="px-3 py-3">Verifikasi</th>
@@ -74,22 +74,24 @@
                         </thead>
                         <tbody class="divide-y divide-slate-100">
                             @foreach ($users as $user)
-                                <tr class="hover:bg-blue-50/40">
-                                    <td class="px-3 py-3">
-                                        <span class="inline-flex min-w-8 justify-center rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-700">{{ $loop->iteration }}</span>
+                                <tr class="transition hover:bg-blue-50/50">
+                                    <td class="px-3 py-3 text-center">
+                                        <span class="inline-flex h-7 min-w-7 items-center justify-center rounded-full bg-slate-100 px-2 text-xs font-bold text-slate-700 ring-1 ring-slate-200">{{ $loop->iteration }}</span>
                                     </td>
                                     <td class="px-3 py-3">
                                         <div class="flex items-center gap-3">
-                                            <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-100 text-sm font-bold text-blue-700">
+                                            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-100 text-sm font-bold text-blue-700 ring-4 ring-blue-50">
                                                 {{ strtoupper(substr($user->name, 0, 1)) }}
                                             </span>
-                                            <span>
-                                                <span class="block font-semibold text-slate-950">{{ $user->name }}</span>
+                                            <span class="min-w-0">
+                                                <span class="block truncate font-semibold text-slate-950">{{ $user->name }}</span>
                                                 <span class="block text-xs text-slate-500">Akun pengguna</span>
                                             </span>
                                         </div>
                                     </td>
-                                    <td class="truncate px-3 py-3 text-slate-600">{{ $user->email }}</td>
+                                    <td class="px-3 py-3">
+                                        <span class="block truncate text-slate-600">{{ $user->email }}</span>
+                                    </td>
                                     <td class="px-3 py-3">
                                         @if ($user->email_verified_at)
                                             <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700">
@@ -104,10 +106,10 @@
                                         @endif
                                     </td>
                                     <td class="px-3 py-3">
-                                        <div class="flex justify-start gap-2">
+                                        <div class="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 p-1 shadow-sm">
                                             <button
                                                 type="button"
-                                                class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100"
+                                                class="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-blue-200 bg-blue-50 text-blue-700 transition hover:bg-blue-100"
                                                 data-user-reset
                                                 data-action="{{ route('starter-kit.users.reset-password', $user) }}"
                                                 data-name="{{ $user->name }}"
@@ -117,7 +119,7 @@
                                             </button>
                                             <button
                                                 type="button"
-                                                class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-100"
+                                                class="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-amber-200 bg-amber-50 text-amber-700 transition hover:bg-amber-100"
                                                 data-user-edit
                                                 data-action="{{ route('starter-kit.users.update', $user) }}"
                                                 data-name="{{ $user->name }}"
@@ -129,7 +131,7 @@
                                             </button>
                                             <button
                                                 type="button"
-                                                class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-rose-200 bg-rose-50 text-rose-700 hover:bg-rose-100"
+                                                class="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-rose-200 bg-rose-50 text-rose-700 transition hover:bg-rose-100"
                                                 data-user-delete
                                                 data-action="{{ route('starter-kit.users.destroy', $user) }}"
                                                 data-name="{{ $user->name }}"

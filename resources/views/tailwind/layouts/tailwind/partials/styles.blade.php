@@ -188,6 +188,28 @@
         padding-top: .85rem;
     }
 
+    .starter-users-table {
+        border-collapse: separate;
+        border-spacing: 0;
+        table-layout: fixed;
+    }
+
+    .starter-users-table thead th {
+        white-space: nowrap;
+    }
+
+    .starter-users-table tbody td {
+        vertical-align: middle;
+    }
+
+    .starter-users-table .starter-col-no {
+        text-align: center !important;
+    }
+
+    .starter-users-table .starter-col-actions {
+        text-align: left !important;
+    }
+
     .dt-container .dt-search label,
     .dt-container .dt-length label,
     .dt-container .dt-info,

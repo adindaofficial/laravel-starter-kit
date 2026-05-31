@@ -24,6 +24,7 @@
 
             const finalOptions = Object.assign({
                 destroy: true,
+                autoWidth: false,
                 info: true,
                 lengthChange: true,
                 ordering: true,
@@ -76,11 +77,24 @@
                 }
 
                 table.dataset.datatableReady = '1';
+                const actionIndex = table.querySelectorAll('thead th').length - 1;
+                const columnDefs = [
+                    { targets: actionIndex, orderable: false, searchable: false }
+                ];
+
+                if (table.id === 'usersTable') {
+                    columnDefs.push(
+                        { targets: 0, width: '4.25rem', className: 'starter-col-no' },
+                        { targets: 1, width: '30%' },
+                        { targets: 2, width: '32%' },
+                        { targets: 3, width: '18%' },
+                        { targets: 4, width: '9.5rem', className: 'starter-col-actions' }
+                    );
+                }
+
                 window.StarterKit.dataTable('#' + table.id, {
                     order: [[0, 'asc']],
-                    columnDefs: [
-                        { targets: table.querySelectorAll('thead th').length - 1, orderable: false, searchable: false }
-                    ]
+                    columnDefs: columnDefs
                 });
             });
         },

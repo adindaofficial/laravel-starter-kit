@@ -19,6 +19,9 @@ resources/
   views/
     tailwind/
       components/
+        tailwind/
+          alert.blade.php
+          stat-card.blade.php
       layouts/
         tailwind/
           app.blade.php
@@ -32,12 +35,11 @@ resources/
             sidebar.blade.php
             styles.blade.php
       users/
+        index.blade.php
 src/
   Console/
     InstallCommand.php
     StaterKitInstallCommand.php
-  Http/
-    Controllers/
   Services/
     StarterKitInstaller.php
   Support/
