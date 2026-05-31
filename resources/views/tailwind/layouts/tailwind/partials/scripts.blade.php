@@ -84,11 +84,11 @@
 
                 if (table.id === 'usersTable') {
                     columnDefs.push(
-                        { targets: 0, width: '6%', className: 'starter-col-no', orderable: false, searchable: false },
-                        { targets: 1, width: '29%' },
-                        { targets: 2, width: '32%' },
-                        { targets: 3, width: '19%' },
-                        { targets: 4, width: '14%', className: 'starter-col-actions' }
+                        { targets: 0, width: '5rem', className: 'starter-col-no', orderable: false, searchable: false },
+                        { targets: 1, width: '30%' },
+                        { targets: 2, width: '34%' },
+                        { targets: 3, width: '18%' },
+                        { targets: 4, width: '12rem', className: 'starter-col-actions' }
                     );
                 }
 
@@ -98,6 +98,14 @@
                 };
 
                 if (table.id === 'usersTable') {
+                    dataTableOptions.responsive = false;
+                    dataTableOptions.columns = [
+                        { width: '5rem' },
+                        { width: '30%' },
+                        { width: '34%' },
+                        { width: '18%' },
+                        { width: '12rem' }
+                    ];
                     dataTableOptions.drawCallback = function () {
                         const api = this.api();
                         const pageInfo = api.page.info();

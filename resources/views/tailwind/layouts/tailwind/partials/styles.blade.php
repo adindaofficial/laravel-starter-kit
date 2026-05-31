@@ -235,9 +235,57 @@
     .starter-users-table {
         border-collapse: separate;
         border-spacing: 0;
-        min-width: 920px;
+        min-width: max(100%, 980px) !important;
         table-layout: fixed;
         width: 100% !important;
+    }
+
+    #usersTable,
+    #usersTable.dataTable {
+        min-width: max(100%, 980px) !important;
+        width: 100% !important;
+    }
+
+    .starter-users-table-shell {
+        width: 100%;
+    }
+
+    .starter-users-table-shell .dt-container {
+        width: 100%;
+    }
+
+    .starter-users-table-shell .dt-container .dt-layout-row {
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+        margin: 0;
+        padding: 1rem;
+    }
+
+    .starter-users-table-shell .dt-container .dt-layout-row:first-child {
+        background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .starter-users-table-shell .dt-container .dt-layout-row:last-child {
+        background: #ffffff;
+        border-top: 1px solid #e2e8f0;
+        margin: 0;
+    }
+
+    .starter-users-table-shell .dt-container .dt-layout-row.dt-layout-table {
+        background: #ffffff;
+        border: 0;
+        border-radius: 0;
+        display: block;
+        overflow-x: auto;
+        padding: 0;
+    }
+
+    .starter-users-table-shell .dt-container .dt-layout-row.dt-layout-table .dt-layout-cell {
+        display: block;
+        min-width: 100%;
+        width: 100%;
     }
 
     .starter-users-table thead th {

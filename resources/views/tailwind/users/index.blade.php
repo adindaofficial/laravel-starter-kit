@@ -55,44 +55,45 @@
             </div>
 
             <div class="p-4 sm:p-5">
-                <table id="usersTable" class="starter-datatable starter-users-table w-full min-w-[920px] text-left text-sm" style="width: 100%;">
+                <div class="starter-users-table-shell overflow-x-auto rounded-lg border border-slate-200 bg-white">
+                    <table id="usersTable" class="starter-datatable starter-users-table text-left text-sm" style="width: 100% !important;">
                         <colgroup>
-                            <col style="width: 6%;">
-                            <col style="width: 29%;">
-                            <col style="width: 32%;">
-                            <col style="width: 19%;">
-                            <col style="width: 14%;">
+                            <col style="width: 5rem;">
+                            <col style="width: 30%;">
+                            <col style="width: 34%;">
+                            <col style="width: 18%;">
+                            <col style="width: 12rem;">
                         </colgroup>
                         <thead>
                             <tr>
-                                <th class="px-4 py-3 text-center">No</th>
-                                <th class="px-4 py-3">Nama</th>
-                                <th class="px-4 py-3">Email</th>
-                                <th class="px-4 py-3">Verifikasi</th>
-                                <th class="px-4 py-3">Aksi</th>
+                                <th class="px-5 py-3 text-center">No</th>
+                                <th class="px-5 py-3">Nama</th>
+                                <th class="px-5 py-3">Email</th>
+                                <th class="px-5 py-3">Verifikasi</th>
+                                <th class="px-5 py-3 text-right">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100">
                             @foreach ($users as $user)
                                 <tr class="transition hover:bg-blue-50/50">
-                                    <td class="px-4 py-3 text-center">
+                                    <td class="px-5 py-3 text-center">
                                         <span data-row-number class="inline-flex h-8 min-w-8 items-center justify-center rounded-full bg-slate-100 px-2 text-xs font-bold text-slate-700 ring-1 ring-slate-200">{{ $loop->iteration }}</span>
                                     </td>
-                                    <td class="px-4 py-3">
+                                    <td class="px-5 py-3">
                                         <div class="flex items-center gap-3">
                                             <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-100 text-sm font-bold text-blue-700 ring-4 ring-blue-50">
                                                 {{ strtoupper(substr($user->name, 0, 1)) }}
                                             </span>
-                                            <span class="min-w-0">
+                                            <span class="min-w-0 flex-1">
                                                 <span class="block truncate font-semibold text-slate-950">{{ $user->name }}</span>
                                                 <span class="block text-xs text-slate-500">Akun pengguna</span>
                                             </span>
                                         </div>
                                     </td>
-                                    <td class="px-4 py-3">
+                                    <td class="px-5 py-3">
                                         <span class="block truncate text-slate-600">{{ $user->email }}</span>
                                     </td>
-                                    <td class="px-4 py-3">
+                                    <td class="px-5 py-3">
                                         @if ($user->email_verified_at)
                                             <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700">
                                                <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
@@ -105,7 +106,7 @@
                                             </span>
                                         @endif
                                     </td>
-                                    <td class="px-4 py-3">
+                                    <td class="px-5 py-3 text-right">
                                         <div class="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 p-1 shadow-sm">
                                             <button
                                                 type="button"
@@ -145,7 +146,8 @@
                                 </tr>
                             @endforeach
                         </tbody>
-                </table>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
