@@ -41,118 +41,148 @@
             <x-tailwind.stat-card label="30 Hari Terakhir" :value="$newUsers" icon="calendar-days" />
         </div>
 
-        <div class="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-panel">
-            <div class="flex flex-col gap-3 border-b border-slate-200 bg-gradient-to-r from-white via-blue-50 to-white p-5 md:flex-row md:items-center md:justify-between">
-                <div class="flex items-start gap-3">
-                    <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-blue-600 text-white shadow-lg shadow-blue-600/20">
-                        <i data-lucide="table-2" class="h-5 w-5"></i>
-                    </span>
+        <div class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg">
+            <div class="border-b border-slate-200 bg-gradient-to-r from-slate-50 via-white to-slate-50 px-6 py-5">
+                <div class="flex items-center gap-3">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 shadow-lg shadow-blue-500/30">
+                        <i data-lucide="table-2" class="h-6 w-6 text-white"></i>
+                    </div>
                     <div>
-                        <h2 class="text-base font-bold text-slate-950">Daftar User</h2>
-                        <p class="mt-1 text-sm text-slate-500">DataTables dengan pencarian, pagination, sorting, dan modal aksi.</p>
+                        <h2 class="text-lg font-bold text-slate-900">Daftar User</h2>
+                        <p class="text-sm text-slate-500">DataTables dengan pencarian, pagination, sorting, dan modal aksi.</p>
                     </div>
                 </div>
             </div>
 
-            <div class="p-4 sm:p-5">
-                <div class="starter-users-table-shell overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
-                    <div class="overflow-x-auto">
-                        <table id="usersTable" class="starter-datatable starter-users-table w-full text-left text-sm">
-                            <colgroup>
-                                <col style="width: 70px;">
-                                <col style="width: auto; min-width: 200px;">
-                                <col style="width: auto; min-width: 220px;">
-                                <col style="width: 150px;">
-                                <col style="width: 160px;">
-                            </colgroup>
-                            <thead class="bg-slate-50">
-                                <tr class="border-b border-slate-200">
-                                    <th class="px-4 py-3.5 text-center text-xs font-bold uppercase tracking-wide text-slate-600">No</th>
-                                    <th class="px-4 py-3.5 text-xs font-bold uppercase tracking-wide text-slate-600">Nama</th>
-                                    <th class="px-4 py-3.5 text-xs font-bold uppercase tracking-wide text-slate-600">Email</th>
-                                    <th class="px-4 py-3.5 text-center text-xs font-bold uppercase tracking-wide text-slate-600">Verifikasi</th>
-                                    <th class="px-4 py-3.5 text-center text-xs font-bold uppercase tracking-wide text-slate-600">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-100 bg-white">
-                                @foreach ($users as $user)
-                                    <tr class="transition-colors duration-150 hover:bg-blue-50/40">
-                                        <td class="px-4 py-4 text-center align-middle">
-                                            <span data-row-number class="inline-flex h-7 min-w-[28px] items-center justify-center rounded-md bg-slate-100 px-2 text-xs font-bold text-slate-700">{{ $loop->iteration }}</span>
-                                        </td>
-                                        <td class="px-4 py-4 align-middle">
-                                            <div class="flex items-center gap-3">
-                                                <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-blue-600 text-sm font-bold text-white shadow-md">
-                                                    {{ strtoupper(substr($user->name, 0, 1)) }}
-                                                </span>
-                                                <div class="min-w-0 flex-1">
-                                                    <div class="truncate font-semibold text-slate-900">{{ $user->name }}</div>
-                                                    <div class="text-xs text-slate-500">Akun pengguna</div>
-                                                </div>
+            <div class="overflow-x-auto">
+                <table id="usersTable" class="starter-datatable starter-users-table w-full border-collapse text-sm">
+                    <thead>
+                        <tr class="border-b-2 border-slate-200 bg-slate-50/80">
+                            <th class="w-20 whitespace-nowrap px-6 py-4 text-center text-xs font-bold uppercase tracking-wider text-slate-600">
+                                <div class="flex items-center justify-center gap-1.5">
+                                    <i data-lucide="hash" class="h-3.5 w-3.5"></i>
+                                    <span>No</span>
+                                </div>
+                            </th>
+                            <th class="min-w-[240px] whitespace-nowrap px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-slate-600">
+                                <div class="flex items-center gap-1.5">
+                                    <i data-lucide="user" class="h-3.5 w-3.5"></i>
+                                    <span>Nama</span>
+                                </div>
+                            </th>
+                            <th class="min-w-[260px] whitespace-nowrap px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-slate-600">
+                                <div class="flex items-center gap-1.5">
+                                    <i data-lucide="mail" class="h-3.5 w-3.5"></i>
+                                    <span>Email</span>
+                                </div>
+                            </th>
+                            <th class="w-40 whitespace-nowrap px-6 py-4 text-center text-xs font-bold uppercase tracking-wider text-slate-600">
+                                <div class="flex items-center justify-center gap-1.5">
+                                    <i data-lucide="shield-check" class="h-3.5 w-3.5"></i>
+                                    <span>Verifikasi</span>
+                                </div>
+                            </th>
+                            <th class="w-44 whitespace-nowrap px-6 py-4 text-center text-xs font-bold uppercase tracking-wider text-slate-600">
+                                <div class="flex items-center justify-center gap-1.5">
+                                    <i data-lucide="settings" class="h-3.5 w-3.5"></i>
+                                    <span>Aksi</span>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 bg-white">
+                        @foreach ($users as $user)
+                            <tr class="group transition-all duration-200 hover:bg-gradient-to-r hover:from-blue-50/50 hover:via-blue-50/30 hover:to-transparent">
+                                <td class="whitespace-nowrap px-6 py-5 text-center">
+                                    <div class="flex items-center justify-center">
+                                        <span data-row-number class="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-slate-100 to-slate-200 text-xs font-bold text-slate-700 shadow-sm ring-1 ring-slate-300/50 transition-all group-hover:from-blue-100 group-hover:to-blue-200 group-hover:text-blue-700 group-hover:ring-blue-300/50">
+                                            {{ $loop->iteration }}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="whitespace-nowrap px-6 py-5">
+                                    <div class="flex items-center gap-3.5">
+                                        <div class="relative">
+                                            <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 text-sm font-bold text-white shadow-lg shadow-blue-500/40 ring-2 ring-white transition-transform group-hover:scale-110">
+                                                {{ strtoupper(substr($user->name, 0, 1)) }}
                                             </div>
-                                        </td>
-                                        <td class="px-4 py-4 align-middle">
-                                            <div class="flex items-center gap-2">
-                                                <i data-lucide="mail" class="h-4 w-4 shrink-0 text-slate-400"></i>
-                                                <span class="truncate text-slate-700">{{ $user->email }}</span>
-                                            </div>
-                                        </td>
-                                        <td class="px-4 py-4 text-center align-middle">
-                                            @if ($user->email_verified_at)
-                                                <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700 ring-1 ring-emerald-200">
-                                                    <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-                                                    Terverifikasi
-                                                </span>
-                                            @else
-                                                <span class="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-3 py-1.5 text-xs font-semibold text-amber-700 ring-1 ring-amber-200">
-                                                    <span class="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
-                                                    Menunggu
-                                                </span>
-                                            @endif
-                                        </td>
-                                        <td class="px-4 py-4 text-center align-middle">
-                                            <div class="inline-flex items-center gap-1 rounded-lg bg-slate-50 p-1">
-                                                <button
-                                                    type="button"
-                                                    class="inline-flex h-8 w-8 items-center justify-center rounded-md bg-blue-50 text-blue-600 transition-all duration-150 hover:bg-blue-100 hover:shadow-sm active:scale-95"
-                                                    data-user-reset
-                                                    data-action="{{ route('starter-kit.users.reset-password', $user) }}"
-                                                    data-name="{{ $user->name }}"
-                                                    title="Reset password"
-                                                >
-                                                    <i data-lucide="key-round" class="h-4 w-4"></i>
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    class="inline-flex h-8 w-8 items-center justify-center rounded-md bg-amber-50 text-amber-600 transition-all duration-150 hover:bg-amber-100 hover:shadow-sm active:scale-95"
-                                                    data-user-edit
-                                                    data-action="{{ route('starter-kit.users.update', $user) }}"
-                                                    data-name="{{ $user->name }}"
-                                                    data-email="{{ $user->email }}"
-                                                    data-verified="{{ $user->email_verified_at ? '1' : '0' }}"
-                                                    title="Edit user"
-                                                >
-                                                    <i data-lucide="pencil" class="h-4 w-4"></i>
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    class="inline-flex h-8 w-8 items-center justify-center rounded-md bg-rose-50 text-rose-600 transition-all duration-150 hover:bg-rose-100 hover:shadow-sm active:scale-95"
-                                                    data-user-delete
-                                                    data-action="{{ route('starter-kit.users.destroy', $user) }}"
-                                                    data-name="{{ $user->name }}"
-                                                    data-email="{{ $user->email }}"
-                                                    title="Delete user"
-                                                >
-                                                    <i data-lucide="trash-2" class="h-4 w-4"></i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                                            <div class="absolute -bottom-0.5 -right-0.5 h-3.5 w-3.5 rounded-full border-2 border-white {{ $user->email_verified_at ? 'bg-emerald-500' : 'bg-slate-400' }} shadow-sm"></div>
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <span class="font-semibold text-slate-900 transition-colors group-hover:text-blue-700">{{ $user->name }}</span>
+                                            <span class="text-xs text-slate-500">Akun pengguna</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-5">
+                                    <div class="flex items-center gap-2.5">
+                                        <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-500 transition-colors group-hover:bg-blue-100 group-hover:text-blue-600">
+                                            <i data-lucide="mail" class="h-4 w-4"></i>
+                                        </div>
+                                        <span class="font-medium text-slate-700 transition-colors group-hover:text-slate-900">{{ $user->email }}</span>
+                                    </div>
+                                </td>
+                                <td class="whitespace-nowrap px-6 py-5 text-center">
+                                    @if ($user->email_verified_at)
+                                        <span class="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-emerald-50 to-emerald-100 px-3.5 py-2 text-xs font-bold text-emerald-700 shadow-sm ring-1 ring-emerald-200/50">
+                                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                            <span>Terverifikasi</span>
+                                        </span>
+                                    @else
+                                        <span class="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-amber-50 to-amber-100 px-3.5 py-2 text-xs font-bold text-amber-700 shadow-sm ring-1 ring-amber-200/50">
+                                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                            <span>Menunggu</span>
+                                        </span>
+                                    @endif
+                                </td>
+                                <td class="whitespace-nowrap px-6 py-5 text-center">
+                                    <div class="flex items-center justify-center gap-2">
+                                        <button
+                                            type="button"
+                                            class="group/btn relative inline-flex h-9 w-9 items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-md shadow-blue-500/30 transition-all duration-200 hover:scale-110 hover:shadow-lg hover:shadow-blue-500/40 active:scale-95"
+                                            data-user-reset
+                                            data-action="{{ route('starter-kit.users.reset-password', $user) }}"
+                                            data-name="{{ $user->name }}"
+                                            title="Reset password"
+                                        >
+                                            <i data-lucide="key-round" class="relative z-10 h-4 w-4"></i>
+                                            <div class="absolute inset-0 bg-gradient-to-br from-blue-400 to-blue-500 opacity-0 transition-opacity group-hover/btn:opacity-100"></div>
+                                        </button>
+                                        <button
+                                            type="button"
+                                            class="group/btn relative inline-flex h-9 w-9 items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-amber-500 to-amber-600 text-white shadow-md shadow-amber-500/30 transition-all duration-200 hover:scale-110 hover:shadow-lg hover:shadow-amber-500/40 active:scale-95"
+                                            data-user-edit
+                                            data-action="{{ route('starter-kit.users.update', $user) }}"
+                                            data-name="{{ $user->name }}"
+                                            data-email="{{ $user->email }}"
+                                            data-verified="{{ $user->email_verified_at ? '1' : '0' }}"
+                                            title="Edit user"
+                                        >
+                                            <i data-lucide="pencil" class="relative z-10 h-4 w-4"></i>
+                                            <div class="absolute inset-0 bg-gradient-to-br from-amber-400 to-amber-500 opacity-0 transition-opacity group-hover/btn:opacity-100"></div>
+                                        </button>
+                                        <button
+                                            type="button"
+                                            class="group/btn relative inline-flex h-9 w-9 items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-rose-500 to-rose-600 text-white shadow-md shadow-rose-500/30 transition-all duration-200 hover:scale-110 hover:shadow-lg hover:shadow-rose-500/40 active:scale-95"
+                                            data-user-delete
+                                            data-action="{{ route('starter-kit.users.destroy', $user) }}"
+                                            data-name="{{ $user->name }}"
+                                            data-email="{{ $user->email }}"
+                                            title="Delete user"
+                                        >
+                                            <i data-lucide="trash-2" class="relative z-10 h-4 w-4"></i>
+                                            <div class="absolute inset-0 bg-gradient-to-br from-rose-400 to-rose-500 opacity-0 transition-opacity group-hover/btn:opacity-100"></div>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
