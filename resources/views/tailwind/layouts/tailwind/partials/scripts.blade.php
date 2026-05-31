@@ -70,6 +70,52 @@
 
             return null;
         },
+        syncUserTableWidth: function (table) {
+            const shell = table.closest('.starter-users-table-shell');
+
+            if (! shell) {
+                return;
+            }
+
+            const width = Math.max(Math.floor(shell.clientWidth), 1040);
+            const layoutTable = table.closest('.dt-layout-table');
+            const layoutCell = table.closest('.dt-layout-cell');
+
+            shell.style.setProperty('width', '100%', 'important');
+
+            if (layoutTable) {
+                layoutTable.style.setProperty('width', '100%', 'important');
+            }
+
+            if (layoutCell) {
+                layoutCell.style.setProperty('width', '100%', 'important');
+                layoutCell.style.setProperty('min-width', '100%', 'important');
+            }
+
+            table.style.setProperty('width', width + 'px', 'important');
+            table.style.setProperty('min-width', width + 'px', 'important');
+        },
+        observeUserTableWidth: function (table) {
+            const shell = table.closest('.starter-users-table-shell');
+
+            if (! shell || table.dataset.widthObserverReady === '1') {
+                return;
+            }
+
+            table.dataset.widthObserverReady = '1';
+
+            if (! window.ResizeObserver) {
+                return;
+            }
+
+            const observer = new ResizeObserver(function () {
+                window.requestAnimationFrame(function () {
+                    window.StarterKit.syncUserTableWidth(table);
+                });
+            });
+
+            observer.observe(shell);
+        },
         initDataTables: function () {
             document.querySelectorAll('.starter-datatable').forEach(function (table) {
                 if (table.dataset.datatableReady === '1') {
@@ -84,11 +130,11 @@
 
                 if (table.id === 'usersTable') {
                     columnDefs.push(
-                        { targets: 0, width: '5rem', className: 'starter-col-no', orderable: false, searchable: false },
+                        { targets: 0, width: '6%', className: 'starter-col-no', orderable: false, searchable: false },
                         { targets: 1, width: '30%' },
                         { targets: 2, width: '34%' },
                         { targets: 3, width: '18%' },
-                        { targets: 4, width: '12rem', className: 'starter-col-actions' }
+                        { targets: 4, width: '12%', className: 'starter-col-actions' }
                     );
                 }
 
@@ -100,11 +146,11 @@
                 if (table.id === 'usersTable') {
                     dataTableOptions.responsive = false;
                     dataTableOptions.columns = [
-                        { width: '5rem' },
+                        { width: '6%' },
                         { width: '30%' },
                         { width: '34%' },
                         { width: '18%' },
-                        { width: '12rem' }
+                        { width: '12%' }
                     ];
                     dataTableOptions.drawCallback = function () {
                         const api = this.api();
@@ -121,10 +167,17 @@
                         if (window.lucide) {
                             window.lucide.createIcons();
                         }
+
+                        window.StarterKit.syncUserTableWidth(table);
                     };
                 }
 
                 window.StarterKit.dataTable('#' + table.id, dataTableOptions);
+
+                if (table.id === 'usersTable') {
+                    window.StarterKit.syncUserTableWidth(table);
+                    window.StarterKit.observeUserTableWidth(table);
+                }
             });
         },
         openModal: function (id) {

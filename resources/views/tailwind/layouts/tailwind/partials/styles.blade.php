@@ -235,18 +235,20 @@
     .starter-users-table {
         border-collapse: separate;
         border-spacing: 0;
-        min-width: max(100%, 980px) !important;
+        min-width: 1040px !important;
         table-layout: fixed;
         width: 100% !important;
     }
 
     #usersTable,
     #usersTable.dataTable {
-        min-width: max(100%, 980px) !important;
+        min-width: 1040px !important;
         width: 100% !important;
     }
 
     .starter-users-table-shell {
+        overflow-x: auto;
+        overflow-y: hidden;
         width: 100%;
     }
 
@@ -286,6 +288,26 @@
         display: block;
         min-width: 100%;
         width: 100%;
+    }
+
+    .starter-users-table-shell table.dataTable col:nth-child(1) {
+        width: 6% !important;
+    }
+
+    .starter-users-table-shell table.dataTable col:nth-child(2) {
+        width: 30% !important;
+    }
+
+    .starter-users-table-shell table.dataTable col:nth-child(3) {
+        width: 34% !important;
+    }
+
+    .starter-users-table-shell table.dataTable col:nth-child(4) {
+        width: 18% !important;
+    }
+
+    .starter-users-table-shell table.dataTable col:nth-child(5) {
+        width: 12% !important;
     }
 
     .starter-users-table thead th {
