@@ -1,8 +1,8 @@
 @hasSection('page-title')
     <div class="relative mb-5 overflow-hidden rounded-lg border border-slate-200 bg-white p-6 shadow-panel">
         <div class="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700"></div>
-        <div class="absolute right-0 top-0 h-28 w-28 rounded-bl-full bg-blue-50"></div>
-        <div class="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+        <div class="pointer-events-none absolute right-0 top-0 h-28 w-28 rounded-bl-full bg-blue-50"></div>
+        <div class="relative z-10 flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
             <div class="relative flex items-start gap-4">
                 <span class="hidden h-14 w-14 shrink-0 items-center justify-center rounded-lg bg-blue-600 text-white shadow-lg shadow-blue-600/20 sm:flex">
                     <i data-lucide="panel-top" class="h-5 w-5"></i>
@@ -18,7 +18,7 @@
             </div>
 
             @hasSection('page-actions')
-                <div class="flex flex-wrap items-center gap-2">
+                <div class="flex flex-wrap items-center gap-2 xl:justify-end">
                     @yield('page-actions')
                 </div>
             @endif

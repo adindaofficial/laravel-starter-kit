@@ -150,6 +150,28 @@
             button.addEventListener('click', closeSidebar);
         });
 
+        const profile = document.querySelector('[data-starter-profile]');
+        const profileButton = document.querySelector('[data-starter-profile-button]');
+        const profileMenu = document.querySelector('[data-starter-profile-menu]');
+
+        const closeProfileMenu = function () {
+            profileMenu?.classList.add('hidden');
+            profileButton?.setAttribute('aria-expanded', 'false');
+        };
+
+        profileButton?.addEventListener('click', function (event) {
+            event.stopPropagation();
+            profileMenu?.classList.toggle('hidden');
+            profileButton.setAttribute('aria-expanded', profileMenu?.classList.contains('hidden') ? 'false' : 'true');
+            lucide.createIcons();
+        });
+
+        document.addEventListener('click', function (event) {
+            if (profile && ! profile.contains(event.target)) {
+                closeProfileMenu();
+            }
+        });
+
         window.StarterKit.initDataTables();
 
         document.addEventListener('click', function (event) {
@@ -169,6 +191,8 @@
             if (event.key !== 'Escape') {
                 return;
             }
+
+            closeProfileMenu();
 
             document.querySelectorAll('[data-starter-modal]:not(.hidden)').forEach(function (modal) {
                 window.StarterKit.closeModal(modal);

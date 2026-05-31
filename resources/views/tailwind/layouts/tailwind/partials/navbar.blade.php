@@ -28,7 +28,7 @@
         </div>
 
         <div class="flex shrink-0 items-center gap-2 sm:gap-3">
-            <div class="hidden items-center gap-2 rounded-lg border border-blue-100 bg-blue-50 px-3 py-2 lg:flex">
+            <div class="hidden items-center gap-2 rounded-lg border border-blue-100 bg-blue-50 px-3 py-2 xl:flex">
                 <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-white text-blue-700 shadow-sm">
                     <i data-lucide="layers-3" class="h-4 w-4"></i>
                 </span>
@@ -38,13 +38,64 @@
                 </span>
             </div>
 
-            <div class="flex min-w-0 items-center gap-3 rounded-lg border border-slate-200 bg-white px-2 py-2 shadow-sm">
-                <div class="hidden min-w-0 text-right sm:block">
-                    <div class="max-w-40 truncate text-sm font-semibold text-slate-900">{{ $starterUserName }}</div>
-                    <div class="text-xs text-slate-500">Administrator</div>
-                </div>
-                <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-600 text-white shadow-lg shadow-blue-600/20">
-                    <span class="text-sm font-bold">{{ $starterInitial }}</span>
+            <div class="relative" data-starter-profile>
+                <button type="button" class="flex min-w-0 items-center gap-3 rounded-lg border border-slate-200 bg-white px-2 py-2 text-left shadow-sm transition hover:border-blue-200 hover:bg-blue-50/40" data-starter-profile-button aria-expanded="false" aria-haspopup="true">
+                    <div class="hidden min-w-0 text-right sm:block">
+                        <div class="max-w-40 truncate text-sm font-semibold text-slate-900">{{ $starterUserName }}</div>
+                        <div class="text-xs text-slate-500">Administrator</div>
+                    </div>
+                    <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-600 text-white shadow-lg shadow-blue-600/20">
+                        <span class="text-sm font-bold">{{ $starterInitial }}</span>
+                    </div>
+                    <i data-lucide="chevron-down" class="hidden h-4 w-4 text-slate-400 sm:block"></i>
+                </button>
+
+                <div class="absolute right-0 z-50 mt-2 hidden w-72 overflow-hidden rounded-lg border border-slate-200 bg-white shadow-2xl shadow-slate-900/10" data-starter-profile-menu>
+                    <div class="border-b border-slate-100 bg-gradient-to-r from-blue-50 to-white p-4">
+                        <div class="flex items-center gap-3">
+                            <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-blue-600 text-white shadow-lg shadow-blue-600/20">
+                                <span class="text-sm font-bold">{{ $starterInitial }}</span>
+                            </span>
+                            <span class="min-w-0">
+                                <span class="block truncate text-sm font-bold text-slate-950">{{ $starterUserName }}</span>
+                                <span class="block truncate text-xs text-slate-500">Administrator</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="p-2">
+                        <button type="button" class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm text-slate-700 transition hover:bg-blue-50 hover:text-blue-700">
+                            <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100 text-slate-600">
+                                <i data-lucide="user-round" class="h-4 w-4"></i>
+                            </span>
+                            <span>
+                                <span class="block font-semibold">Profile</span>
+                                <span class="block text-xs text-slate-500">Informasi akun</span>
+                            </span>
+                        </button>
+
+                        <button type="button" class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm text-slate-700 transition hover:bg-blue-50 hover:text-blue-700">
+                            <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100 text-slate-600">
+                                <i data-lucide="settings" class="h-4 w-4"></i>
+                            </span>
+                            <span>
+                                <span class="block font-semibold">Setting</span>
+                                <span class="block text-xs text-slate-500">Preferensi tampilan</span>
+                            </span>
+                        </button>
+
+                        <div class="my-2 border-t border-slate-100"></div>
+
+                        <button type="button" class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm text-rose-700 transition hover:bg-rose-50">
+                            <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-rose-50 text-rose-600">
+                                <i data-lucide="log-out" class="h-4 w-4"></i>
+                            </span>
+                            <span>
+                                <span class="block font-semibold">Logout</span>
+                                <span class="block text-xs text-rose-500">Tampilan menu saja</span>
+                            </span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

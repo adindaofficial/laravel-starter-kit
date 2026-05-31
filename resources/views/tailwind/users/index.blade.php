@@ -1,9 +1,9 @@
 @extends('layouts.tailwind.app')
 
-@section('title', 'Users')
-@section('page-kicker', 'Management')
-@section('page-title', 'Manajemen Users')
-@section('page-subtitle', 'Kelola user melalui tabel DataTables lengkap dengan pencarian, pagination, sorting, dan status verifikasi.')
+@section('title', 'Manajemen User')
+@section('page-kicker', 'Pengguna')
+@section('page-title', 'Manajemen User')
+@section('page-subtitle', 'Kelola akun pengguna, status verifikasi, password, dan data akses dari satu halaman.')
 @section('page-actions')
     <button type="button" class="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 text-sm font-bold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-700" data-user-create>
         <i data-lucide="user-plus" class="h-4 w-4"></i>
@@ -30,9 +30,9 @@
         @endif
 
         <div class="grid gap-4 md:grid-cols-3">
-            <x-tailwind.stat-card label="Total users" :value="$totalUsers" icon="users" />
-            <x-tailwind.stat-card label="Verified" :value="$verifiedUsers" icon="badge-check" />
-            <x-tailwind.stat-card label="Last 30 days" :value="$newUsers" icon="calendar-days" />
+            <x-tailwind.stat-card label="Total User" :value="$totalUsers" icon="users" />
+            <x-tailwind.stat-card label="Terverifikasi" :value="$verifiedUsers" icon="badge-check" />
+            <x-tailwind.stat-card label="30 Hari Terakhir" :value="$newUsers" icon="calendar-days" />
         </div>
 
         <div class="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-panel">
@@ -42,8 +42,8 @@
                         <i data-lucide="table-2" class="h-5 w-5"></i>
                     </span>
                     <div>
-                        <h2 class="text-base font-bold text-slate-950">Users</h2>
-                        <p class="mt-1 text-sm text-slate-500">Kelola data pengguna dengan DataTables dan action modal.</p>
+                        <h2 class="text-base font-bold text-slate-950">Daftar User</h2>
+                        <p class="mt-1 text-sm text-slate-500">DataTables dengan pencarian, pagination, sorting, dan modal aksi.</p>
                     </div>
                 </div>
             </div>
@@ -53,11 +53,11 @@
                         <thead>
                             <tr>
                                 <th class="px-3 py-3">ID</th>
-                                <th class="px-3 py-3">Name</th>
+                                <th class="px-3 py-3">Nama</th>
                                 <th class="px-3 py-3">Email</th>
-                                <th class="px-3 py-3">Verified</th>
-                                <th class="px-3 py-3">Created</th>
-                                <th class="px-3 py-3 text-right">Actions</th>
+                                <th class="px-3 py-3">Verifikasi</th>
+                                <th class="px-3 py-3">Dibuat</th>
+                                <th class="px-3 py-3 text-right">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100">
@@ -73,7 +73,7 @@
                                             </span>
                                             <span>
                                                 <span class="block font-semibold text-slate-950">{{ $user->name }}</span>
-                                                <span class="block text-xs text-slate-500">User account</span>
+                                                <span class="block text-xs text-slate-500">Akun pengguna</span>
                                             </span>
                                         </div>
                                     </td>
@@ -81,13 +81,13 @@
                                     <td class="px-3 py-3">
                                         @if ($user->email_verified_at)
                                             <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700">
-                                                <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-                                                Verified
+                                               <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+                                                Terverifikasi
                                             </span>
                                         @else
                                             <span class="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600">
                                                 <span class="h-1.5 w-1.5 rounded-full bg-slate-400"></span>
-                                                Pending
+                                                Menunggu
                                             </span>
                                         @endif
                                     </td>
@@ -151,7 +151,7 @@
                             </span>
                             <div>
                                 <h3 class="text-base font-bold text-slate-950">Tambah User</h3>
-                                <p class="mt-1 text-sm text-slate-500">Buat akun user baru langsung dari starter kit.</p>
+                                <p class="mt-1 text-sm text-slate-500">Buat akun pengguna baru dengan password awal.</p>
                             </div>
                         </div>
                         <button type="button" class="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700" data-starter-modal-close>
@@ -161,7 +161,7 @@
 
                     <div class="grid gap-4 p-5 md:grid-cols-2">
                         <label class="block md:col-span-2">
-                            <span class="text-sm font-semibold text-slate-700">Name</span>
+                            <span class="text-sm font-semibold text-slate-700">Nama</span>
                             <input name="name" type="text" class="mt-1 h-11 w-full rounded-lg border border-slate-200 px-3 text-sm outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100" required>
                         </label>
 
@@ -183,17 +183,17 @@
                         <label class="flex items-center gap-3 rounded-lg border border-slate-200 bg-slate-50 p-3 md:col-span-2">
                             <input name="email_verified" value="1" type="checkbox" class="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
                             <span>
-                                <span class="block text-sm font-semibold text-slate-800">Verified email</span>
+                                <span class="block text-sm font-semibold text-slate-800">Email terverifikasi</span>
                                 <span class="block text-xs text-slate-500">Centang jika email user sudah diverifikasi.</span>
                             </span>
                         </label>
                     </div>
 
                     <div class="flex justify-end gap-2 border-t border-slate-200 bg-slate-50 p-4">
-                        <button type="button" class="inline-flex h-10 items-center justify-center rounded-lg border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-100" data-starter-modal-close>Cancel</button>
+                        <button type="button" class="inline-flex h-10 items-center justify-center rounded-lg border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-100" data-starter-modal-close>Batal</button>
                         <button type="submit" class="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 text-sm font-semibold text-white shadow-sm shadow-blue-600/20 hover:bg-blue-700">
                             <i data-lucide="save" class="h-4 w-4"></i>
-                            Save user
+                            Simpan User
                         </button>
                     </div>
                 </form>
@@ -226,7 +226,7 @@
 
                     <div class="space-y-4 p-5">
                         <label class="block">
-                            <span class="text-sm font-semibold text-slate-700">Name</span>
+                            <span class="text-sm font-semibold text-slate-700">Nama</span>
                             <input id="editUserName" name="name" type="text" class="mt-1 h-11 w-full rounded-lg border border-slate-200 px-3 text-sm outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100" required>
                         </label>
 
@@ -238,15 +238,15 @@
                         <label class="flex items-center gap-3 rounded-lg border border-slate-200 bg-slate-50 p-3">
                             <input id="editUserVerified" name="email_verified" value="1" type="checkbox" class="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
                             <span>
-                                <span class="block text-sm font-semibold text-slate-800">Verified email</span>
+                                <span class="block text-sm font-semibold text-slate-800">Email terverifikasi</span>
                                 <span class="block text-xs text-slate-500">Centang untuk menandai email user sudah terverifikasi.</span>
                             </span>
                         </label>
                     </div>
 
                     <div class="flex justify-end gap-2 border-t border-slate-200 bg-slate-50 p-4">
-                        <button type="button" class="inline-flex h-10 items-center justify-center rounded-lg border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-100" data-starter-modal-close>Cancel</button>
-                        <button type="submit" class="inline-flex h-10 items-center justify-center rounded-lg bg-blue-600 px-4 text-sm font-semibold text-white shadow-sm shadow-blue-600/20 hover:bg-blue-700">Save changes</button>
+                        <button type="button" class="inline-flex h-10 items-center justify-center rounded-lg border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-100" data-starter-modal-close>Batal</button>
+                        <button type="submit" class="inline-flex h-10 items-center justify-center rounded-lg bg-blue-600 px-4 text-sm font-semibold text-white shadow-sm shadow-blue-600/20 hover:bg-blue-700">Simpan Perubahan</button>
                     </div>
                 </form>
             </div>
@@ -281,18 +281,18 @@
                                 <i data-lucide="user-round" class="h-4 w-4"></i>
                             </span>
                             <div>
-                                <div class="text-xs font-semibold uppercase text-blue-700">Target User</div>
+                                <div class="text-xs font-semibold uppercase text-blue-700">User Tujuan</div>
                                 <div id="resetUserName" class="mt-0.5 text-sm font-bold text-slate-900"></div>
                             </div>
                         </div>
 
                         <label class="block">
-                            <span class="text-sm font-semibold text-slate-700">New password</span>
+                            <span class="text-sm font-semibold text-slate-700">Password baru</span>
                             <input id="resetPassword" name="password" type="password" value="password" class="mt-1 h-11 w-full rounded-lg border border-slate-200 px-3 text-sm outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100" required>
                         </label>
 
                         <label class="block">
-                            <span class="text-sm font-semibold text-slate-700">Confirm password</span>
+                            <span class="text-sm font-semibold text-slate-700">Konfirmasi password</span>
                             <input id="resetPasswordConfirmation" name="password_confirmation" type="password" value="password" class="mt-1 h-11 w-full rounded-lg border border-slate-200 px-3 text-sm outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100" required>
                         </label>
 
@@ -302,7 +302,7 @@
                     </div>
 
                     <div class="flex justify-end gap-2 border-t border-slate-200 bg-slate-50 p-4">
-                        <button type="button" class="inline-flex h-10 items-center justify-center rounded-lg border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-100" data-starter-modal-close>Cancel</button>
+                        <button type="button" class="inline-flex h-10 items-center justify-center rounded-lg border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-100" data-starter-modal-close>Batal</button>
                         <button type="submit" class="inline-flex h-10 items-center justify-center rounded-lg bg-blue-600 px-4 text-sm font-semibold text-white shadow-sm shadow-blue-600/20 hover:bg-blue-700">Reset password</button>
                     </div>
                 </form>
@@ -324,7 +324,7 @@
                                 <i data-lucide="trash-2" class="h-5 w-5"></i>
                             </span>
                             <div>
-                                <h3 class="text-base font-bold text-slate-950">Delete User</h3>
+                                <h3 class="text-base font-bold text-slate-950">Hapus User</h3>
                                 <p class="mt-1 text-sm text-slate-500">Aksi ini akan menghapus user dari database.</p>
                             </div>
                         </div>
@@ -342,8 +342,8 @@
                     </div>
 
                     <div class="flex justify-end gap-2 border-t border-slate-200 bg-slate-50 p-4">
-                        <button type="button" class="inline-flex h-10 items-center justify-center rounded-lg border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-100" data-starter-modal-close>Cancel</button>
-                        <button type="submit" class="inline-flex h-10 items-center justify-center rounded-lg bg-rose-600 px-4 text-sm font-semibold text-white shadow-sm shadow-rose-600/20 hover:bg-rose-700">Delete user</button>
+                        <button type="button" class="inline-flex h-10 items-center justify-center rounded-lg border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-100" data-starter-modal-close>Batal</button>
+                        <button type="submit" class="inline-flex h-10 items-center justify-center rounded-lg bg-rose-600 px-4 text-sm font-semibold text-white shadow-sm shadow-rose-600/20 hover:bg-rose-700">Hapus User</button>
                     </div>
                 </form>
             </div>

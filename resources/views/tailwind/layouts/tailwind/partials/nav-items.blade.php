@@ -2,14 +2,14 @@
     $items = [
         [
             'label' => 'Dashboard',
-            'description' => 'Overview',
+            'description' => 'Ringkasan',
             'url' => url('/'),
             'icon' => 'gauge',
             'active' => request()->path() === '/',
         ],
         [
-            'label' => 'Users',
-            'description' => 'Management',
+            'label' => 'User',
+            'description' => 'Manajemen',
             'url' => url('/users'),
             'icon' => 'users',
             'active' => request()->routeIs('starter-kit.users.*') || request()->is('users*'),
