@@ -1,10 +1,11 @@
-@props([
-    'label',
-    'value',
-    'icon' => 'bar-chart',
-])
+@php
+    $label = $label ?? '';
+    $value = $value ?? '0';
+    $icon = $icon ?? 'bar-chart';
+    $class = $class ?? '';
+@endphp
 
-<div {{ $attributes->class(['group', 'relative', 'overflow-hidden', 'rounded-lg', 'border', 'border-slate-200', 'bg-white', 'p-4', 'shadow-sm', 'transition', 'hover:-translate-y-0.5', 'hover:shadow-panel']) }}>
+<div class="group relative overflow-hidden rounded-lg border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-panel {{ $class }}">
     <div class="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700"></div>
     <div class="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-blue-50 transition group-hover:scale-110"></div>
     <div class="relative flex items-center gap-3">

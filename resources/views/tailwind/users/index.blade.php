@@ -26,19 +26,25 @@
 
     <div class="space-y-5">
         @if ($errors->any())
-            <x-tailwind.alert type="danger" title="Validasi gagal">
+            @include('layouts.tailwind.components.alert', [
+                'type' => 'danger',
+                'title' => 'Validasi gagal',
+                'content' => 'Periksa kembali data yang dikirim melalui form.',
+            ])
+
+            <div class="rounded-lg border border-rose-100 bg-white p-4 text-sm text-rose-800 shadow-sm">
                 <ul class="list-disc space-y-1 pl-4">
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
                 </ul>
-            </x-tailwind.alert>
+            </div>
         @endif
 
         <div class="grid gap-4 md:grid-cols-3">
-            <x-tailwind.stat-card label="Total User" :value="$totalUsers" icon="users" />
-            <x-tailwind.stat-card label="Terverifikasi" :value="$verifiedUsers" icon="badge-check" />
-            <x-tailwind.stat-card label="30 Hari Terakhir" :value="$newUsers" icon="calendar-days" />
+            @include('layouts.tailwind.components.stat-card', ['label' => 'Total User', 'value' => $totalUsers, 'icon' => 'users'])
+            @include('layouts.tailwind.components.stat-card', ['label' => 'Terverifikasi', 'value' => $verifiedUsers, 'icon' => 'badge-check'])
+            @include('layouts.tailwind.components.stat-card', ['label' => '30 Hari Terakhir', 'value' => $newUsers, 'icon' => 'calendar-days'])
         </div>
 
         <div class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg">

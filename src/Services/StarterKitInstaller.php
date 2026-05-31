@@ -22,6 +22,7 @@ class StarterKitInstaller
         $this->copyDirectory($this->packagePath('resources/stubs'), base_path(), $force, $output);
         $this->copyDirectory($this->packagePath('database'), database_path(), $force, $output);
         $this->copyDirectory($this->packagePath("resources/views/{$stack}"), resource_path('views'), $force, $output);
+        $this->removeLegacyRootComponents($output);
         $this->appendUserSeederCall($output);
 
         if ($loadRoutes) {
@@ -68,8 +69,13 @@ class StarterKitInstaller
         }
 
         if (str_contains($contents, "starter-kit.users.index")) {
-            $this->filesystem->put($routePath, rtrim($contents).PHP_EOL);
-            $this->write($output, 'line', 'Skipped existing: routes/web.php already contains starter kit routes');
+            if (! str_contains($contents, "starter-kit.documentation.index")) {
+                $this->filesystem->put($routePath, rtrim($contents).PHP_EOL.PHP_EOL.$this->starterKitDocumentationRoute().PHP_EOL);
+                $this->write($output, 'line', 'Updated: routes/web.php documentation route');
+            } else {
+                $this->filesystem->put($routePath, rtrim($contents).PHP_EOL);
+                $this->write($output, 'line', 'Skipped existing: routes/web.php already contains starter kit routes');
+            }
 
             return;
         }
@@ -117,6 +123,47 @@ class StarterKitInstaller
         $this->write($output, 'line', 'Removed legacy: routes/starter-kit.php');
     }
 
+    private function removeLegacyRootComponents(?callable $output = null): void
+    {
+        $components = [
+            resource_path('views/components/tailwind/alert.blade.php') => 'data-lucide="{{ $style[\'icon\'] }}"',
+            resource_path('views/components/tailwind/stat-card.blade.php') => 'hover:shadow-panel',
+        ];
+
+        foreach ($components as $path => $signature) {
+            if (! $this->filesystem->exists($path)) {
+                continue;
+            }
+
+            $contents = $this->filesystem->get($path);
+
+            if (! str_contains($contents, $signature)) {
+                $this->write($output, 'warn', 'Skipped removing customized component: '.str_replace(base_path().DIRECTORY_SEPARATOR, '', $path));
+
+                continue;
+            }
+
+            $this->filesystem->delete($path);
+            $this->write($output, 'line', 'Removed legacy component: '.str_replace(base_path().DIRECTORY_SEPARATOR, '', $path));
+        }
+
+        $this->deleteDirectoryIfEmpty(resource_path('views/components/tailwind'));
+        $this->deleteDirectoryIfEmpty(resource_path('views/components'));
+    }
+
+    private function deleteDirectoryIfEmpty(string $path): void
+    {
+        if (! $this->filesystem->isDirectory($path)) {
+            return;
+        }
+
+        if ($this->filesystem->files($path) !== [] || $this->filesystem->directories($path) !== []) {
+            return;
+        }
+
+        $this->filesystem->deleteDirectory($path);
+    }
+
     private function starterKitRouteBlock(): string
     {
         return <<<'PHP'
@@ -128,8 +175,17 @@ class StarterKitInstaller
     \Illuminate\Support\Facades\Route::post('/users/{user}/reset-password', [\App\Http\Controllers\UserController::class, 'resetPassword'])->name('users.reset-password');
     \Illuminate\Support\Facades\Route::delete('/users/reset-data', [\App\Http\Controllers\UserController::class, 'destroyAll'])->name('users.reset-data');
     \Illuminate\Support\Facades\Route::delete('/users/{user}', [\App\Http\Controllers\UserController::class, 'destroy'])->name('users.destroy');
+    \Illuminate\Support\Facades\Route::view('/documentation', 'documentation.index')->name('documentation.index');
 });
 // Laravel Starter Kit Routes: END
+PHP;
+    }
+
+    private function starterKitDocumentationRoute(): string
+    {
+        return <<<'PHP'
+// Laravel Starter Kit Documentation Route
+\Illuminate\Support\Facades\Route::view('/documentation', 'documentation.index')->name('starter-kit.documentation.index');
 PHP;
     }
 

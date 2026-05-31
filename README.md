@@ -18,13 +18,14 @@ resources/
           UserController.php
   views/
     tailwind/
-      components/
-        tailwind/
-          alert.blade.php
-          stat-card.blade.php
+      documentation/
+        index.blade.php
       layouts/
         tailwind/
           app.blade.php
+          components/
+            alert.blade.php
+            stat-card.blade.php
           partials/
             footer.blade.php
             mobile-sidebar.blade.php
@@ -102,6 +103,7 @@ Buka halaman:
 
 ```text
 /users
+/documentation
 ```
 
 Halaman Users sudah memakai DataTables dan menyediakan action berbasis modal:
@@ -115,12 +117,13 @@ Halaman Users sudah memakai DataTables dan menyediakan action berbasis modal:
 
 - `app/Http/Controllers/UserController.php`
 - `resources/views/layouts/tailwind/*`
+- `resources/views/layouts/tailwind/components/*`
 - asset layout seperti Tailwind CSS, Lucide icons, DataTables, SweetAlert, custom CSS, dan JS berada di `resources/views/layouts/tailwind/partials`
-- `resources/views/components/tailwind/*`
+- `resources/views/documentation/index.blade.php` dengan dokumentasi UI, contoh komponen, dan potongan kode
 - `resources/views/users/index.blade.php` dengan DataTables dan modal action
 - `database/seeders/UserSeeder.php`
 - `database/seeders/DatabaseSeeder.php` akan ditambahkan `$this->call(UserSeeder::class);`
-- `routes/web.php` akan langsung ditambahkan route halaman users
+- `routes/web.php` akan langsung ditambahkan route halaman users dan documentation
 
 ## Struktur Project Setelah Install
 
@@ -135,11 +138,14 @@ database/
     UserSeeder.php
 resources/
   views/
-    components/
-      tailwind/
+    documentation/
+      index.blade.php
     layouts/
       tailwind/
         app.blade.php
+        components/
+          alert.blade.php
+          stat-card.blade.php
         partials/
           footer.blade.php
           mobile-sidebar.blade.php

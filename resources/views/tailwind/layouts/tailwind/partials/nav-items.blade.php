@@ -1,6 +1,7 @@
 @php
     $dashboardActive = request()->path() === '/';
     $userActive = request()->routeIs('starter-kit.users.*') || request()->is('users*');
+    $documentationActive = request()->routeIs('starter-kit.documentation.*') || request()->is('documentation*');
 @endphp
 
 <a href="{{ url('/') }}" class="group relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition {{ $dashboardActive ? 'bg-white text-blue-800 shadow-lg shadow-blue-950/10' : 'text-blue-50 hover:bg-white/10 hover:text-white' }}" @if ($dashboardActive) aria-current="page" @endif>
@@ -62,3 +63,22 @@
         </button>
     </div>
 </details>
+
+<a href="{{ url('/documentation') }}" class="group relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition {{ $documentationActive ? 'bg-white text-blue-800 shadow-lg shadow-blue-950/10' : 'text-blue-50 hover:bg-white/10 hover:text-white' }}" @if ($documentationActive) aria-current="page" @endif>
+    @if ($documentationActive)
+        <span class="absolute left-0 top-2 bottom-2 w-1 rounded-r-full bg-blue-600"></span>
+    @endif
+
+    <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg transition {{ $documentationActive ? 'bg-blue-50 text-blue-700' : 'bg-white/10 text-blue-100 group-hover:bg-white/15 group-hover:text-white' }}">
+        <i data-lucide="book-open-text" class="h-4 w-4"></i>
+    </span>
+
+    <span class="min-w-0 flex-1">
+        <span class="block truncate font-bold">Dokumentasi</span>
+        <span class="block truncate text-xs {{ $documentationActive ? 'text-blue-500' : 'text-blue-200 group-hover:text-blue-100' }}">Komponen UI</span>
+    </span>
+
+    @if ($documentationActive)
+        <i data-lucide="chevron-right" class="h-4 w-4 text-blue-500"></i>
+    @endif
+</a>
