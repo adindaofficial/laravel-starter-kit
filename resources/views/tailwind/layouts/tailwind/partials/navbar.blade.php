@@ -28,15 +28,16 @@
         </div>
 
         <div class="flex shrink-0 items-center gap-2 sm:gap-3">
-            <div class="hidden items-center gap-2 rounded-lg border border-blue-100 bg-blue-50 px-3 py-2 xl:flex">
-                <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-white text-blue-700 shadow-sm">
-                    <i data-lucide="layers-3" class="h-4 w-4"></i>
+            <button type="button" class="hidden items-center gap-2 rounded-lg border border-blue-100 bg-blue-50 px-3 py-2 text-left shadow-sm transition hover:border-blue-200 hover:bg-blue-100/60 xl:flex">
+                <span class="relative flex h-8 w-8 items-center justify-center rounded-lg bg-white text-blue-700 shadow-sm">
+                    <i data-lucide="bell" class="h-4 w-4"></i>
+                    <span class="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full border-2 border-white bg-rose-500"></span>
                 </span>
                 <span>
-                    <span class="block text-xs font-bold text-blue-800">Tailwind Kit</span>
-                    <span class="block text-[11px] text-blue-600">Ready</span>
+                    <span class="block text-xs font-bold text-blue-800">Notifikasi</span>
+                    <span class="block text-[11px] text-blue-600">3 baru</span>
                 </span>
-            </div>
+            </button>
 
             <div class="relative" data-starter-profile>
                 <button type="button" class="flex min-w-0 items-center gap-3 rounded-lg border border-slate-200 bg-white px-2 py-2 text-left shadow-sm transition hover:border-blue-200 hover:bg-blue-50/40" data-starter-profile-button aria-expanded="false" aria-haspopup="true">

@@ -18,16 +18,6 @@
             </button>
         </div>
 
-        <div class="mb-4 overflow-hidden rounded-lg border border-white/10 bg-gradient-to-br from-white/15 to-white/[.06] p-3">
-            <div class="flex items-center justify-between gap-3">
-                <div>
-                    <div class="text-xs font-semibold uppercase text-blue-200">Panel Admin</div>
-                    <div class="mt-1 text-sm font-bold text-white">Dashboard Starter</div>
-                </div>
-                <span class="rounded-full bg-emerald-400/15 px-2 py-0.5 text-xs font-semibold text-emerald-100">Online</span>
-            </div>
-        </div>
-
         <div class="px-3 pb-2 text-xs font-bold uppercase text-blue-200">Menu Utama</div>
         <nav class="space-y-1.5">
             @include('layouts.tailwind.partials.nav-items')

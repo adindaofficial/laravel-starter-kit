@@ -5,10 +5,16 @@
 @section('page-title', 'Manajemen User')
 @section('page-subtitle', 'Kelola akun pengguna, status verifikasi, password, dan data akses dari satu halaman.')
 @section('page-actions')
-    <button type="button" class="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 text-sm font-bold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-700" data-user-create>
-        <i data-lucide="user-plus" class="h-4 w-4"></i>
-        Tambah User
-    </button>
+    <div class="flex flex-wrap items-center gap-2">
+        <button type="button" class="inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-rose-200 bg-white px-4 text-sm font-bold text-rose-700 shadow-sm transition hover:bg-rose-50" data-users-reset-all data-action="{{ route('starter-kit.users.reset-data') }}">
+            <i data-lucide="rotate-ccw" class="h-4 w-4"></i>
+            Reset Data
+        </button>
+        <button type="button" class="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 text-sm font-bold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-700" data-user-create>
+            <i data-lucide="user-plus" class="h-4 w-4"></i>
+            Tambah User
+        </button>
+    </div>
 @endsection
 
 @section('content')
@@ -49,14 +55,21 @@
             </div>
 
             <div class="p-4">
-                <table id="usersTable" class="starter-datatable w-full min-w-[760px] text-left text-sm">
+                <table id="usersTable" class="starter-datatable table-fixed w-full min-w-[700px] text-left text-sm">
+                        <colgroup>
+                            <col style="width: 4.75rem;">
+                            <col style="width: 28%;">
+                            <col style="width: 34%;">
+                            <col style="width: 20%;">
+                            <col style="width: 9.75rem;">
+                        </colgroup>
                         <thead>
                             <tr>
                                 <th class="px-3 py-3">No</th>
                                 <th class="px-3 py-3">Nama</th>
                                 <th class="px-3 py-3">Email</th>
                                 <th class="px-3 py-3">Verifikasi</th>
-                                <th class="px-3 py-3 text-right">Aksi</th>
+                                <th class="px-3 py-3">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100">
@@ -76,7 +89,7 @@
                                             </span>
                                         </div>
                                     </td>
-                                    <td class="px-3 py-3 text-slate-600">{{ $user->email }}</td>
+                                    <td class="truncate px-3 py-3 text-slate-600">{{ $user->email }}</td>
                                     <td class="px-3 py-3">
                                         @if ($user->email_verified_at)
                                             <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700">
@@ -91,7 +104,7 @@
                                         @endif
                                     </td>
                                     <td class="px-3 py-3">
-                                        <div class="flex justify-end gap-2">
+                                        <div class="flex justify-start gap-2">
                                             <button
                                                 type="button"
                                                 class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100"
@@ -347,6 +360,47 @@
             </div>
         </div>
     </div>
+
+    <div id="resetAllUsersModal" class="fixed inset-0 z-50 hidden" data-starter-modal>
+        <div class="absolute inset-0 bg-slate-950/55 opacity-0 backdrop-blur-sm transition-opacity duration-150" data-starter-modal-backdrop></div>
+        <div class="relative flex min-h-full items-center justify-center p-4">
+            <div class="w-full max-w-md translate-y-2 scale-95 rounded-lg border border-slate-200 bg-white opacity-0 shadow-2xl transition-all duration-150" data-starter-modal-panel>
+                <form id="resetAllUsersForm" method="POST">
+                    @csrf
+                    @method('DELETE')
+
+                    <div class="flex items-start justify-between gap-4 border-b border-slate-200 bg-gradient-to-r from-rose-50 via-white to-white p-5">
+                        <div class="flex items-start gap-3">
+                            <span class="flex h-10 w-10 items-center justify-center rounded-lg bg-rose-50 text-rose-700">
+                                <i data-lucide="rotate-ccw" class="h-5 w-5"></i>
+                            </span>
+                            <div>
+                                <h3 class="text-base font-bold text-slate-950">Reset Data User</h3>
+                                <p class="mt-1 text-sm text-slate-500">Aksi ini akan menghapus semua data user.</p>
+                            </div>
+                        </div>
+                        <button type="button" class="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700" data-starter-modal-close>
+                            <i data-lucide="x" class="h-5 w-5"></i>
+                        </button>
+                    </div>
+
+                    <div class="space-y-4 p-5">
+                        <div class="rounded-lg border border-rose-100 bg-rose-50 p-4 text-sm text-rose-800">
+                            Semua record pada tabel users akan dihapus. Proses ini tidak dapat dibatalkan dari starter kit.
+                        </div>
+                        <div class="rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm text-slate-600">
+                            Total data saat ini: <span class="font-bold text-slate-900">{{ $totalUsers }}</span> user.
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end gap-2 border-t border-slate-200 bg-slate-50 p-4">
+                        <button type="button" class="inline-flex h-10 items-center justify-center rounded-lg border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-100" data-starter-modal-close>Batal</button>
+                        <button type="submit" class="inline-flex h-10 items-center justify-center rounded-lg bg-rose-600 px-4 text-sm font-semibold text-white shadow-sm shadow-rose-600/20 hover:bg-rose-700">Hapus Semua</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('scripts')
@@ -357,10 +411,16 @@
                 const editButton = event.target.closest('[data-user-edit]');
                 const resetButton = event.target.closest('[data-user-reset]');
                 const deleteButton = event.target.closest('[data-user-delete]');
+                const resetAllButton = event.target.closest('[data-users-reset-all]');
 
                 if (createButton) {
                     document.getElementById('createUserForm').reset();
                     window.StarterKit.openModal('createUserModal');
+                }
+
+                if (resetAllButton) {
+                    document.getElementById('resetAllUsersForm').action = resetAllButton.dataset.action;
+                    window.StarterKit.openModal('resetAllUsersModal');
                 }
 
                 if (editButton) {

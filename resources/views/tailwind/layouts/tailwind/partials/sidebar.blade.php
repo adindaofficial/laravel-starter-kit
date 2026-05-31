@@ -16,26 +16,6 @@
         </a>
     </div>
 
-    <div class="relative mb-5 overflow-hidden rounded-lg border border-white/10 bg-gradient-to-br from-white/15 to-white/[.06] p-4 shadow-inner shadow-white/5">
-        <div class="absolute right-0 top-0 h-20 w-20 rounded-bl-full bg-white/10"></div>
-        <div class="relative flex items-center justify-between gap-3">
-            <div>
-                <div class="text-xs font-semibold uppercase text-blue-200">Panel Admin</div>
-                <div class="mt-1 text-sm font-bold text-white">Dashboard Starter</div>
-            </div>
-            <span class="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10 text-blue-100">
-                <i data-lucide="sparkles" class="h-5 w-5"></i>
-            </span>
-        </div>
-        <div class="relative mt-4 h-1.5 overflow-hidden rounded-full bg-white/15">
-            <div class="h-full w-4/5 rounded-full bg-gradient-to-r from-blue-200 via-white to-emerald-200"></div>
-        </div>
-        <div class="relative mt-3 flex items-center justify-between text-xs text-blue-100">
-            <span>Interface Tailwind</span>
-            <span class="font-semibold text-white">Aktif</span>
-        </div>
-    </div>
-
     <div class="relative px-3 pb-2 text-xs font-bold uppercase text-blue-200">Menu Utama</div>
     <nav class="relative space-y-1.5">
         @include('layouts.tailwind.partials.nav-items')

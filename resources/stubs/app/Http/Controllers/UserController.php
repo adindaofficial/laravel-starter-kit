@@ -75,6 +75,15 @@ class UserController extends Controller
             ->with('status', 'Password user berhasil direset.');
     }
 
+    public function destroyAll(): RedirectResponse
+    {
+        $deleted = User::query()->delete();
+
+        return redirect()
+            ->route('starter-kit.users.index')
+            ->with('status', "{$deleted} data user berhasil dihapus.");
+    }
+
     public function destroy(User $user): RedirectResponse
     {
         $user->delete();
