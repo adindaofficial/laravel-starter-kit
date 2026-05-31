@@ -246,8 +246,49 @@
         width: 100% !important;
     }
 
+    #usersTable_wrapper {
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+
+    #usersTable_wrapper .dt-layout-row,
+    #usersTable_wrapper .dt-layout-cell {
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+
+    #usersTable_wrapper .dt-layout-row.dt-layout-table {
+        display: block !important;
+        overflow: hidden;
+        width: 100% !important;
+    }
+
+    #usersTable_wrapper .dt-scroll,
+    #usersTable_wrapper .dt-scroll-head,
+    #usersTable_wrapper .dt-scroll-body,
+    #usersTable_wrapper .dt-scroll-foot {
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+
+    #usersTable_wrapper .dt-scroll-head {
+        overflow: hidden !important;
+    }
+
+    #usersTable_wrapper .dt-scroll-body {
+        border-bottom: 0;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+    }
+
+    #usersTable_wrapper .dt-scroll-headInner,
+    #usersTable_wrapper .dt-scroll-headInner table,
+    #usersTable_wrapper .dt-scroll-body table {
+        min-width: 1040px !important;
+        width: 100% !important;
+    }
+
     .starter-users-table-shell {
-        overflow-x: auto;
         overflow-y: hidden;
         width: 100%;
     }

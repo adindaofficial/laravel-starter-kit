@@ -55,8 +55,8 @@
             </div>
 
             <div class="p-4 sm:p-5">
-                <div class="starter-users-table-shell overflow-x-auto rounded-lg border border-slate-200 bg-white">
-                    <table id="usersTable" class="starter-datatable starter-users-table text-left text-sm" style="width: 100% !important; min-width: 1040px !important;">
+                <div class="starter-users-table-shell rounded-lg border border-slate-200 bg-white">
+                    <table id="usersTable" class="starter-datatable starter-users-table text-left text-sm" style="width: 100%;">
                         <colgroup>
                             <col style="width: 6%;">
                             <col style="width: 30%;">

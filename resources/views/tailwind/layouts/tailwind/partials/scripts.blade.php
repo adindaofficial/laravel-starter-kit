@@ -70,30 +70,44 @@
 
             return null;
         },
-        syncUserTableWidth: function (table) {
-            const shell = table.closest('.starter-users-table-shell');
+        syncUserTableWidth: function (table, dataTable = null) {
+            const wrapper = document.getElementById(table.id + '_wrapper');
+            const shell = wrapper?.closest('.starter-users-table-shell') || table.closest('.starter-users-table-shell');
 
             if (! shell) {
                 return;
             }
 
+            if (dataTable && typeof dataTable.columns === 'function') {
+                dataTable.columns.adjust();
+            }
+
             const width = Math.max(Math.floor(shell.clientWidth), 1040);
-            const layoutTable = table.closest('.dt-layout-table');
-            const layoutCell = table.closest('.dt-layout-cell');
+            const targets = [
+                wrapper,
+                wrapper?.querySelector('.dt-layout-table'),
+                wrapper?.querySelector('.dt-layout-table .dt-layout-cell'),
+                wrapper?.querySelector('.dt-scroll'),
+                wrapper?.querySelector('.dt-scroll-head'),
+                wrapper?.querySelector('.dt-scroll-headInner'),
+                wrapper?.querySelector('.dt-scroll-body')
+            ].filter(Boolean);
 
             shell.style.setProperty('width', '100%', 'important');
 
-            if (layoutTable) {
-                layoutTable.style.setProperty('width', '100%', 'important');
-            }
+            targets.forEach(function (target) {
+                target.style.setProperty('width', '100%', 'important');
+                target.style.setProperty('max-width', '100%', 'important');
+            });
 
-            if (layoutCell) {
-                layoutCell.style.setProperty('width', '100%', 'important');
-                layoutCell.style.setProperty('min-width', '100%', 'important');
-            }
+            wrapper?.querySelectorAll('table').forEach(function (currentTable) {
+                currentTable.style.setProperty('width', width + 'px', 'important');
+                currentTable.style.setProperty('min-width', width + 'px', 'important');
+            });
 
             table.style.setProperty('width', width + 'px', 'important');
             table.style.setProperty('min-width', width + 'px', 'important');
+
         },
         observeUserTableWidth: function (table) {
             const shell = table.closest('.starter-users-table-shell');
@@ -145,6 +159,8 @@
 
                 if (table.id === 'usersTable') {
                     dataTableOptions.responsive = false;
+                    dataTableOptions.scrollX = true;
+                    dataTableOptions.scrollCollapse = false;
                     dataTableOptions.columns = [
                         { width: '6%' },
                         { width: '30%' },
@@ -172,10 +188,16 @@
                     };
                 }
 
-                window.StarterKit.dataTable('#' + table.id, dataTableOptions);
+                const dataTable = window.StarterKit.dataTable('#' + table.id, dataTableOptions);
 
                 if (table.id === 'usersTable') {
-                    window.StarterKit.syncUserTableWidth(table);
+                    window.StarterKit.syncUserTableWidth(table, dataTable);
+                    setTimeout(function () {
+                        window.StarterKit.syncUserTableWidth(table, dataTable);
+                    }, 80);
+                    setTimeout(function () {
+                        window.StarterKit.syncUserTableWidth(table, dataTable);
+                    }, 240);
                     window.StarterKit.observeUserTableWidth(table);
                 }
             });
