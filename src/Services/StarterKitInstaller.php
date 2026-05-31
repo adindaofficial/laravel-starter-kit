@@ -1,39 +1,151 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Mwy\LaravelStarterKit\Services;
 
 use Illuminate\Filesystem\Filesystem;
 use Mwy\LaravelStarterKit\Traits\InstallsFiles;
 
+/**
+ * Starter Kit Installer Service
+ *
+ * Handles the installation process of Laravel Starter Kit components including:
+ * - Copying view files and stubs
+ * - Managing route configurations
+ * - Setting up database seeders
+ * - Cleaning up legacy files
+ *
+ * @package Mwy\LaravelStarterKit\Services
+ */
 class StarterKitInstaller
 {
     use InstallsFiles;
 
+    /**
+     * Legacy route require pattern for removal
+     *
+     * @var string
+     */
     private const LEGACY_ROUTE_REQUIRE_PATTERN = '/^\s*require\s+__DIR__\s*\.\s*[\'"]\/starter-kit\.php[\'"]\s*;\s*[\r\n]*/m';
+
+    /**
+     * Route block markers
+     *
+     * @var string
+     */
     private const ROUTE_BLOCK_START = '// Laravel Starter Kit Routes: BEGIN';
     private const ROUTE_BLOCK_END = '// Laravel Starter Kit Routes: END';
 
-    public function __construct(private readonly Filesystem $filesystem)
-    {
+    /**
+     * Create a new installer instance.
+     *
+     * @param  \Illuminate\Filesystem\Filesystem  $filesystem
+     * @return void
+     */
+    public function __construct(
+        private readonly Filesystem $filesystem
+    ) {
     }
 
-    public function install(string $stack, bool $force = false, bool $loadRoutes = true, ?callable $output = null): void
-    {
-        $this->copyDirectory($this->packagePath('resources/stubs'), base_path(), $force, $output);
-        $this->copyDirectory($this->packagePath('database'), database_path(), $force, $output);
-        $this->copyDirectory($this->packagePath("resources/views/{$stack}"), resource_path('views'), $force, $output);
-        $this->removeLegacyRootComponents($output);
-        $this->appendUserSeederCall($output);
+    /**
+     * Install the starter kit.
+     *
+     * @param  string  $stack
+     * @param  bool  $force
+     * @param  bool  $loadRoutes
+     * @param  callable|null  $output
+     * @return void
+     */
+    public function install(
+        string $stack,
+        bool $force = false,
+        bool $loadRoutes = true,
+        ?callable $output = null
+    ): void {
+        $this->installFiles($stack, $force, $output);
+        $this->cleanupLegacyFiles($output);
+        $this->setupDatabase($output);
 
         if ($loadRoutes) {
-            $this->appendStarterKitRoutesToWeb($output);
-            $this->removeLegacyStarterKitRouteFile($output);
+            $this->setupRoutes($output);
         }
     }
 
+    /**
+     * Get the filesystem instance.
+     *
+     * @return \Illuminate\Filesystem\Filesystem
+     */
     protected function files(): Filesystem
     {
         return $this->filesystem;
+    }
+
+    /**
+     * Install all necessary files.
+     *
+     * @param  string  $stack
+     * @param  bool  $force
+     * @param  callable|null  $output
+     * @return void
+     */
+    protected function installFiles(string $stack, bool $force, ?callable $output): void
+    {
+        $this->copyDirectory(
+            $this->packagePath('resources/stubs'),
+            base_path(),
+            $force,
+            $output
+        );
+
+        $this->copyDirectory(
+            $this->packagePath('database'),
+            database_path(),
+            $force,
+            $output
+        );
+
+        $this->copyDirectory(
+            $this->packagePath("resources/views/{$stack}"),
+            resource_path('views'),
+            $force,
+            $output
+        );
+    }
+
+    /**
+     * Setup database seeders.
+     *
+     * @param  callable|null  $output
+     * @return void
+     */
+    protected function setupDatabase(?callable $output): void
+    {
+        $this->appendUserSeederCall($output);
+    }
+
+    /**
+     * Setup application routes.
+     *
+     * @param  callable|null  $output
+     * @return void
+     */
+    protected function setupRoutes(?callable $output): void
+    {
+        $this->appendStarterKitRoutesToWeb($output);
+        $this->removeLegacyStarterKitRouteFile($output);
+    }
+
+    /**
+     * Clean up legacy files and components.
+     *
+     * @param  callable|null  $output
+     * @return void
+     */
+    protected function cleanupLegacyFiles(?callable $output): void
+    {
+        $this->removeLegacyRootComponents($output);
     }
 
     private function appendStarterKitRoutesToWeb(?callable $output = null): void
