@@ -132,7 +132,7 @@ The installer focuses on starter-kit UI files only:
 - `resources/views/layouts/tailwind/**`
 - `resources/views/users/index.blade.php`
 - `resources/views/documentation/index.blade.php`
-- Starter Kit routes appended to `routes/web.php`
+- Starter Kit routes from package `routes/web.php`, appended to project `routes/web.php`
 
 No package configuration file is copied or merged during installation.
 
@@ -207,6 +207,8 @@ laravel-starter-kit/
 ├── database/
 │   └── seeders/
 │       └── UserSeeder.php           # Optional sample user seeder
+├── routes/
+│   └── web.php                      # Starter kit route definitions
 ├── resources/
 │   ├── stubs/
 │   │   └── app/

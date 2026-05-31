@@ -114,39 +114,4 @@ trait InstallsFiles
 
         $output($type, $message);
     }
-
-    /**
-     * Check if a file exists and contains specific content.
-     *
-     * @param  string  $path
-     * @param  string  $content
-     * @return bool
-     */
-    protected function fileContains(string $path, string $content): bool
-    {
-        if (! $this->files()->exists($path)) {
-            return false;
-        }
-
-        return str_contains($this->files()->get($path), $content);
-    }
-
-    /**
-     * Delete a file if it exists.
-     *
-     * @param  string  $path
-     * @param  callable|null  $output
-     * @return bool
-     */
-    protected function deleteFileIfExists(string $path, ?callable $output = null): bool
-    {
-        if (! $this->files()->exists($path)) {
-            return false;
-        }
-
-        $this->files()->delete($path);
-        $this->write($output, 'line', 'Deleted: ' . basename($path));
-
-        return true;
-    }
 }

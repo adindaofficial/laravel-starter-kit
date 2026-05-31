@@ -6,6 +6,7 @@ namespace Mwy\LaravelStarterKit\Services;
 
 use Illuminate\Filesystem\Filesystem;
 use Mwy\LaravelStarterKit\Traits\InstallsFiles;
+use RuntimeException;
 
 /**
  * Starter Kit Installer Service
@@ -175,14 +176,8 @@ class StarterKitInstaller
         }
 
         if (str_contains($contents, "starter-kit.users.index")) {
-            if (! str_contains($contents, "starter-kit.documentation.index")) {
-                $this->filesystem->put($routePath, rtrim($contents).PHP_EOL.PHP_EOL.$this->starterKitDocumentationRoute().PHP_EOL);
-                $this->write($output, 'line', 'Updated: routes/web.php documentation route');
-            } else {
-                $this->filesystem->put($routePath, rtrim($contents).PHP_EOL);
-                $this->write($output, 'line', 'Skipped existing: routes/web.php already contains starter kit routes');
-            }
-
+            $this->filesystem->put($routePath, rtrim($contents).PHP_EOL);
+            $this->write($output, 'warn', 'Skipped routes/web.php because starter kit routes already exist without managed markers.');
             return;
         }
 
@@ -272,27 +267,19 @@ class StarterKitInstaller
 
     private function starterKitRouteBlock(): string
     {
-        return <<<'PHP'
-// Laravel Starter Kit Routes: BEGIN
-\Illuminate\Support\Facades\Route::name('starter-kit.')->group(function () {
-    \Illuminate\Support\Facades\Route::get('/users', [\App\Http\Controllers\UserController::class, 'index'])->name('users.index');
-    \Illuminate\Support\Facades\Route::post('/users', [\App\Http\Controllers\UserController::class, 'store'])->name('users.store');
-    \Illuminate\Support\Facades\Route::patch('/users/{user}', [\App\Http\Controllers\UserController::class, 'update'])->name('users.update');
-    \Illuminate\Support\Facades\Route::post('/users/{user}/reset-password', [\App\Http\Controllers\UserController::class, 'resetPassword'])->name('users.reset-password');
-    \Illuminate\Support\Facades\Route::delete('/users/reset-data', [\App\Http\Controllers\UserController::class, 'destroyAll'])->name('users.reset-data');
-    \Illuminate\Support\Facades\Route::delete('/users/{user}', [\App\Http\Controllers\UserController::class, 'destroy'])->name('users.destroy');
-    \Illuminate\Support\Facades\Route::view('/documentation', 'documentation.index')->name('documentation.index');
-});
-// Laravel Starter Kit Routes: END
-PHP;
-    }
+        $routePath = $this->packagePath('routes/web.php');
 
-    private function starterKitDocumentationRoute(): string
-    {
-        return <<<'PHP'
-// Laravel Starter Kit Documentation Route
-\Illuminate\Support\Facades\Route::view('/documentation', 'documentation.index')->name('starter-kit.documentation.index');
-PHP;
+        if (! $this->filesystem->exists($routePath)) {
+            throw new RuntimeException('Starter kit route file not found: routes/web.php');
+        }
+
+        $contents = trim($this->filesystem->get($routePath));
+
+        if (str_starts_with($contents, '<?php')) {
+            $contents = trim(substr($contents, 5));
+        }
+
+        return $contents;
     }
 
     private function packagePath(string $path = ''): string

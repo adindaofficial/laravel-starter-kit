@@ -660,7 +660,7 @@ Swal.fire({
             <section id="routes" class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
                 <div class="mb-4">
                     <h2 class="text-lg font-bold text-slate-950">Routes dan install</h2>
-                    <p class="mt-1 text-sm text-slate-500">Installer menulis route langsung ke <code class="rounded bg-slate-100 px-1 py-0.5 text-xs">routes/web.php</code>.</p>
+                    <p class="mt-1 text-sm text-slate-500">Installer membaca route package dari <code class="rounded bg-slate-100 px-1 py-0.5 text-xs">routes/web.php</code> lalu menambahkannya ke <code class="rounded bg-slate-100 px-1 py-0.5 text-xs">routes/web.php</code> aplikasi.</p>
                 </div>
 
                 <div class="grid gap-3 lg:grid-cols-2">
