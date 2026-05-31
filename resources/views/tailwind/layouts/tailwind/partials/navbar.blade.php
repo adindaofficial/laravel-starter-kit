@@ -93,7 +93,7 @@
                             </span>
                             <span>
                                 <span class="block font-semibold">Logout</span>
-                                <span class="block text-xs text-rose-500">Tampilan menu saja</span>
+                                <span class="block text-xs text-rose-500">Keluar Dari Dashboard</span>
                             </span>
                         </button>
                     </div>
