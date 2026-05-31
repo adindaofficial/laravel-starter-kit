@@ -49,14 +49,13 @@
             </div>
 
             <div class="p-4">
-                <table id="usersTable" class="starter-datatable w-full min-w-[820px] text-left text-sm">
+                <table id="usersTable" class="starter-datatable w-full min-w-[760px] text-left text-sm">
                         <thead>
                             <tr>
-                                <th class="px-3 py-3">ID</th>
+                                <th class="px-3 py-3">No</th>
                                 <th class="px-3 py-3">Nama</th>
                                 <th class="px-3 py-3">Email</th>
                                 <th class="px-3 py-3">Verifikasi</th>
-                                <th class="px-3 py-3">Dibuat</th>
                                 <th class="px-3 py-3 text-right">Aksi</th>
                             </tr>
                         </thead>
@@ -64,7 +63,7 @@
                             @foreach ($users as $user)
                                 <tr class="hover:bg-blue-50/40">
                                     <td class="px-3 py-3">
-                                        <span class="inline-flex rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-700">#{{ $user->id }}</span>
+                                        <span class="inline-flex min-w-8 justify-center rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-700">{{ $loop->iteration }}</span>
                                     </td>
                                     <td class="px-3 py-3">
                                         <div class="flex items-center gap-3">
@@ -91,7 +90,6 @@
                                             </span>
                                         @endif
                                     </td>
-                                    <td class="px-3 py-3 text-slate-600">{{ optional($user->created_at)->format('d M Y') }}</td>
                                     <td class="px-3 py-3">
                                         <div class="flex justify-end gap-2">
                                             <button
