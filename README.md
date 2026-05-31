@@ -32,8 +32,6 @@ resources/
             sidebar.blade.php
             styles.blade.php
       users/
-routes/
-  starter-kit.php
 src/
   Console/
     InstallCommand.php
@@ -87,7 +85,7 @@ php artisan stater-kit:install --force
 php artisan stater-kit:install --without-route
 ```
 
-`--without-route` tetap membuat file `routes/starter-kit.php`, tetapi tidak menambahkan loader ke `routes/web.php`.
+`--without-route` tidak menambahkan route starter kit ke `routes/web.php`.
 
 ## Setelah Install
 
@@ -106,6 +104,7 @@ Buka halaman:
 
 Halaman Users sudah memakai DataTables dan menyediakan action berbasis modal:
 
+- Tambah user
 - Reset password
 - Edit user
 - Delete user
@@ -113,14 +112,13 @@ Halaman Users sudah memakai DataTables dan menyediakan action berbasis modal:
 ## File Yang Dipasang
 
 - `app/Http/Controllers/UserController.php`
-- `routes/starter-kit.php`
 - `resources/views/layouts/tailwind/*`
 - asset layout seperti Tailwind CSS, Lucide icons, DataTables, SweetAlert, custom CSS, dan JS berada di `resources/views/layouts/tailwind/partials`
 - `resources/views/components/tailwind/*`
 - `resources/views/users/index.blade.php` dengan DataTables dan modal action
 - `database/seeders/UserSeeder.php`
 - `database/seeders/DatabaseSeeder.php` akan ditambahkan `$this->call(UserSeeder::class);`
-- `routes/web.php` akan memuat `routes/starter-kit.php`
+- `routes/web.php` akan langsung ditambahkan route halaman users
 
 ## Struktur Project Setelah Install
 
@@ -152,6 +150,5 @@ resources/
     users/
       index.blade.php
 routes/
-  starter-kit.php
   web.php
 ```

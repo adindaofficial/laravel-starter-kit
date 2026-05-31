@@ -20,6 +20,27 @@ class UserController extends Controller
         return view('users.index', compact('users'));
     }
 
+    public function store(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255', Rule::unique('users', 'email')],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'email_verified' => ['nullable', 'boolean'],
+        ]);
+
+        User::forceCreate([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+            'email_verified_at' => $request->boolean('email_verified') ? now() : null,
+        ]);
+
+        return redirect()
+            ->route('starter-kit.users.index')
+            ->with('status', 'User berhasil ditambahkan.');
+    }
+
     public function update(Request $request, User $user): RedirectResponse
     {
         $validated = $request->validate([

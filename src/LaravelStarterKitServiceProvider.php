@@ -33,10 +33,6 @@ class LaravelStarterKitServiceProvider extends ServiceProvider
         ], 'laravel-starter-kit-seeders');
 
         $this->publishes([
-            dirname(__DIR__).'/routes/starter-kit.php' => base_path('routes/starter-kit.php'),
-        ], 'laravel-starter-kit-routes');
-
-        $this->publishes([
             dirname(__DIR__).'/resources/views' => resource_path('views/vendor/laravel-starter-kit'),
         ], 'laravel-starter-kit-views');
 

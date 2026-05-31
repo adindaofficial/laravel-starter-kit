@@ -9,7 +9,9 @@ class StarterKitInstaller
 {
     use InstallsFiles;
 
-    private const ROUTE_REQUIRE_LINE = "require __DIR__.'/starter-kit.php';";
+    private const LEGACY_ROUTE_REQUIRE_PATTERN = '/^\s*require\s+__DIR__\s*\.\s*[\'"]\/starter-kit\.php[\'"]\s*;\s*[\r\n]*/m';
+    private const ROUTE_BLOCK_START = '// Laravel Starter Kit Routes: BEGIN';
+    private const ROUTE_BLOCK_END = '// Laravel Starter Kit Routes: END';
 
     public function __construct(private readonly Filesystem $filesystem)
     {
@@ -19,12 +21,12 @@ class StarterKitInstaller
     {
         $this->copyDirectory($this->packagePath('resources/stubs'), base_path(), $force, $output);
         $this->copyDirectory($this->packagePath('database'), database_path(), $force, $output);
-        $this->copyDirectory($this->packagePath('routes'), base_path('routes'), $force, $output);
         $this->copyDirectory($this->packagePath("resources/views/{$stack}"), resource_path('views'), $force, $output);
         $this->appendUserSeederCall($output);
 
         if ($loadRoutes) {
-            $this->appendStarterKitRouteLoader($output);
+            $this->appendStarterKitRoutesToWeb($output);
+            $this->removeLegacyStarterKitRouteFile($output);
         }
     }
 
@@ -33,7 +35,7 @@ class StarterKitInstaller
         return $this->filesystem;
     }
 
-    private function appendStarterKitRouteLoader(?callable $output = null): void
+    private function appendStarterKitRoutesToWeb(?callable $output = null): void
     {
         $routePath = base_path('routes/web.php');
         $this->ensureDirectoryExists(dirname($routePath));
@@ -43,9 +45,31 @@ class StarterKitInstaller
         }
 
         $contents = $this->filesystem->get($routePath);
+        $contents = $this->removeLegacyStarterKitRouteLoader($contents, $output);
+        $routeBlock = $this->starterKitRouteBlock();
 
-        if (str_contains($contents, self::ROUTE_REQUIRE_LINE)) {
-            $this->write($output, 'line', 'Skipped existing: routes/web.php already loads routes/starter-kit.php');
+        if (str_contains($contents, self::ROUTE_BLOCK_START) && str_contains($contents, self::ROUTE_BLOCK_END)) {
+            $updated = preg_replace(
+                '/'.preg_quote(self::ROUTE_BLOCK_START, '/').'.*?'.preg_quote(self::ROUTE_BLOCK_END, '/').'/s',
+                $routeBlock,
+                $contents,
+                1,
+                $count,
+            );
+
+            if ($updated !== null && $count > 0 && $updated !== $contents) {
+                $this->filesystem->put($routePath, rtrim($updated).PHP_EOL);
+                $this->write($output, 'line', 'Updated: routes/web.php starter kit routes');
+            } else {
+                $this->write($output, 'line', 'Skipped existing: routes/web.php already has starter kit routes');
+            }
+
+            return;
+        }
+
+        if (str_contains($contents, "starter-kit.users.index")) {
+            $this->filesystem->put($routePath, rtrim($contents).PHP_EOL);
+            $this->write($output, 'line', 'Skipped existing: routes/web.php already contains starter kit routes');
 
             return;
         }
@@ -56,8 +80,56 @@ class StarterKitInstaller
             $contents = rtrim(substr($contents, 0, -2));
         }
 
-        $this->filesystem->put($routePath, $contents.PHP_EOL.PHP_EOL.self::ROUTE_REQUIRE_LINE.PHP_EOL);
+        $this->filesystem->put($routePath, $contents.PHP_EOL.PHP_EOL.$routeBlock.PHP_EOL);
         $this->write($output, 'line', 'Updated: routes/web.php');
+    }
+
+    private function removeLegacyStarterKitRouteLoader(string $contents, ?callable $output = null): string
+    {
+        $updated = preg_replace(self::LEGACY_ROUTE_REQUIRE_PATTERN, '', $contents, -1, $count);
+
+        if ($updated !== null && $count > 0) {
+            $this->write($output, 'line', 'Removed legacy routes/starter-kit.php loader from routes/web.php');
+
+            return $updated;
+        }
+
+        return $contents;
+    }
+
+    private function removeLegacyStarterKitRouteFile(?callable $output = null): void
+    {
+        $routeFile = base_path('routes/starter-kit.php');
+
+        if (! $this->filesystem->exists($routeFile)) {
+            return;
+        }
+
+        $contents = $this->filesystem->get($routeFile);
+
+        if (! str_contains($contents, 'Laravel Starter Kit Routes')) {
+            $this->write($output, 'warn', 'Skipped removing routes/starter-kit.php because it does not look like a starter kit generated file.');
+
+            return;
+        }
+
+        $this->filesystem->delete($routeFile);
+        $this->write($output, 'line', 'Removed legacy: routes/starter-kit.php');
+    }
+
+    private function starterKitRouteBlock(): string
+    {
+        return <<<'PHP'
+// Laravel Starter Kit Routes: BEGIN
+\Illuminate\Support\Facades\Route::name('starter-kit.')->group(function () {
+    \Illuminate\Support\Facades\Route::get('/users', [\App\Http\Controllers\UserController::class, 'index'])->name('users.index');
+    \Illuminate\Support\Facades\Route::post('/users', [\App\Http\Controllers\UserController::class, 'store'])->name('users.store');
+    \Illuminate\Support\Facades\Route::patch('/users/{user}', [\App\Http\Controllers\UserController::class, 'update'])->name('users.update');
+    \Illuminate\Support\Facades\Route::post('/users/{user}/reset-password', [\App\Http\Controllers\UserController::class, 'resetPassword'])->name('users.reset-password');
+    \Illuminate\Support\Facades\Route::delete('/users/{user}', [\App\Http\Controllers\UserController::class, 'destroy'])->name('users.destroy');
+});
+// Laravel Starter Kit Routes: END
+PHP;
     }
 
     private function appendUserSeederCall(?callable $output = null): void
