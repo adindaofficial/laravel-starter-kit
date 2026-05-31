@@ -13,7 +13,7 @@ use Mwy\LaravelStarterKit\Support\Stack;
  * Install Command
  *
  * Handles the installation of Laravel Starter Kit components including
- * Tailwind layouts, users page, DataTables, SweetAlert, icons, and seeders.
+ * Tailwind layouts, users page, documentation page, DataTables, SweetAlert, and icons.
  *
  * @package Mwy\LaravelStarterKit\Console
  */
@@ -34,7 +34,7 @@ class InstallCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Install Tailwind Laravel starter-kit layouts, users page, DataTables, SweetAlert, icons, and UserSeeder.';
+    protected $description = 'Install Tailwind Laravel starter-kit layouts, routes, users page, documentation page, DataTables, SweetAlert, and icons.';
 
     /**
      * Create a new command instance.
@@ -119,9 +119,8 @@ class InstallCommand extends Command
         $this->newLine();
         $this->comment('Next steps:');
         $this->line('  1. Run migrations:    <fg=cyan>php artisan migrate</>');
-        $this->line('  2. Seed database:     <fg=cyan>php artisan db:seed</>');
-        $this->line('  3. Visit users page:  <fg=cyan>/users</>');
-        $this->line('  4. View docs:         <fg=cyan>/documentation</>');
+        $this->line('  2. Visit users page:  <fg=cyan>/users</>');
+        $this->line('  3. View docs:         <fg=cyan>/documentation</>');
         $this->newLine();
     }
 

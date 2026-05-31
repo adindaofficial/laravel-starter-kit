@@ -33,7 +33,6 @@
 - ✅ **DataTables** - Sorting, searching, pagination
 - ✅ **SweetAlert2** - Beautiful alerts dan confirmations
 - ✅ **Interactive Documentation** - Live examples dan code snippets
-- ✅ **UserSeeder** - Pre-configured database seeder
 - ✅ **Route Management** - Auto-configured routes
 
 ### 📱 **Responsive Design**
@@ -99,9 +98,6 @@ php artisan starter-kit:install --stack=tailwind
 ```bash
 # Run migrations
 php artisan migrate
-
-# Seed database with sample users
-php artisan db:seed
 ```
 
 ### Step 4: Compile Assets
@@ -127,6 +123,18 @@ After installation, you can access:
 
 - **Users Management**: `http://your-app.test/users`
 - **Documentation**: `http://your-app.test/documentation`
+
+### Installed Files
+
+The installer focuses on starter-kit UI files only:
+
+- `app/Http/Controllers/UserController.php`
+- `resources/views/layouts/tailwind/**`
+- `resources/views/users/index.blade.php`
+- `resources/views/documentation/index.blade.php`
+- Starter Kit routes appended to `routes/web.php`
+
+No package configuration file is copied or merged during installation.
 
 ### User Management Features
 
@@ -196,11 +204,9 @@ Swal.fire({
 
 ```text
 laravel-starter-kit/
-├── config/
-│   └── starter-kit.php              # Package configuration
 ├── database/
 │   └── seeders/
-│       └── UserSeeder.php           # User seeder
+│       └── UserSeeder.php           # Optional sample user seeder
 ├── resources/
 │   ├── stubs/
 │   │   └── app/
@@ -282,31 +288,18 @@ Visit `/documentation` after installation to see:
 
 ---
 
-## 🔧 Configuration
-
-### Publish Configuration
-
-```bash
-php artisan vendor:publish --tag=laravel-starter-kit-config
-```
-
-### Configuration Options
-
-Edit `config/starter-kit.php`:
-
-```php
-return [
-    'stacks' => ['tailwind'],
-    'default_stack' => 'tailwind',
-    
-    // Add your custom configurations here
-];
-```
+## 🔧 Optional Publishing
 
 ### Publish Views
 
 ```bash
 php artisan vendor:publish --tag=laravel-starter-kit-views
+```
+
+### Publish Controller Stub
+
+```bash
+php artisan vendor:publish --tag=laravel-starter-kit-stubs
 ```
 
 ### Publish Seeders

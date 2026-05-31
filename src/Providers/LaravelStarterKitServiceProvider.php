@@ -11,19 +11,10 @@ use Mwy\LaravelStarterKit\Console\StaterKitInstallCommand;
 class LaravelStarterKitServiceProvider extends ServiceProvider
 {
     private const PUBLISH_GROUPS = [
-        'config' => 'laravel-starter-kit-config',
         'views' => 'laravel-starter-kit-views',
         'stubs' => 'laravel-starter-kit-stubs',
         'seeders' => 'laravel-starter-kit-seeders',
     ];
-
-    public function register(): void
-    {
-        $this->mergeConfigFrom(
-            $this->packagePath('config/starter-kit.php'),
-            'starter-kit',
-        );
-    }
 
     public function boot(): void
     {
@@ -36,17 +27,9 @@ class LaravelStarterKitServiceProvider extends ServiceProvider
             StaterKitInstallCommand::class,
         ]);
 
-        $this->publishConfig();
         $this->publishViews();
         $this->publishStubs();
         $this->publishSeeders();
-    }
-
-    private function publishConfig(): void
-    {
-        $this->publishes([
-            $this->packagePath('config/starter-kit.php') => config_path('starter-kit.php'),
-        ], self::PUBLISH_GROUPS['config']);
     }
 
     private function publishViews(): void

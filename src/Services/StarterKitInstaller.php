@@ -11,9 +11,8 @@ use Mwy\LaravelStarterKit\Traits\InstallsFiles;
  * Starter Kit Installer Service
  *
  * Handles the installation process of Laravel Starter Kit components including:
- * - Copying view files and stubs
- * - Managing route configurations
- * - Setting up database seeders
+ * - Copying controller stubs and Blade views
+ * - Managing route registration in routes/web.php
  * - Cleaning up legacy files
  *
  * @package Mwy\LaravelStarterKit\Services
@@ -65,7 +64,6 @@ class StarterKitInstaller
     ): void {
         $this->installFiles($stack, $force, $output);
         $this->cleanupLegacyFiles($output);
-        $this->setupDatabase($output);
 
         if ($loadRoutes) {
             $this->setupRoutes($output);
@@ -93,36 +91,32 @@ class StarterKitInstaller
     protected function installFiles(string $stack, bool $force, ?callable $output): void
     {
         $this->copyDirectory(
-            $this->packagePath('resources/stubs'),
-            base_path(),
+            $this->packagePath('resources/stubs/app/Http/Controllers'),
+            app_path('Http/Controllers'),
             $force,
             $output
         );
 
         $this->copyDirectory(
-            $this->packagePath('database'),
-            database_path(),
+            $this->packagePath("resources/views/{$stack}/layouts"),
+            resource_path('views/layouts'),
             $force,
             $output
         );
 
         $this->copyDirectory(
-            $this->packagePath("resources/views/{$stack}"),
-            resource_path('views'),
+            $this->packagePath("resources/views/{$stack}/users"),
+            resource_path('views/users'),
             $force,
             $output
         );
-    }
 
-    /**
-     * Setup database seeders.
-     *
-     * @param  callable|null  $output
-     * @return void
-     */
-    protected function setupDatabase(?callable $output): void
-    {
-        $this->appendUserSeederCall($output);
+        $this->copyDirectory(
+            $this->packagePath("resources/views/{$stack}/documentation"),
+            resource_path('views/documentation'),
+            $force,
+            $output
+        );
     }
 
     /**
@@ -298,63 +292,6 @@ PHP;
         return <<<'PHP'
 // Laravel Starter Kit Documentation Route
 \Illuminate\Support\Facades\Route::view('/documentation', 'documentation.index')->name('starter-kit.documentation.index');
-PHP;
-    }
-
-    private function appendUserSeederCall(?callable $output = null): void
-    {
-        $seederPath = database_path('seeders/DatabaseSeeder.php');
-        $this->ensureDirectoryExists(dirname($seederPath));
-
-        if (! $this->filesystem->exists($seederPath)) {
-            $this->filesystem->put($seederPath, $this->defaultDatabaseSeeder());
-            $this->write($output, 'line', 'Created: seeders/DatabaseSeeder.php');
-
-            return;
-        }
-
-        $contents = $this->filesystem->get($seederPath);
-
-        if (str_contains($contents, 'UserSeeder::class')) {
-            $this->write($output, 'line', 'Skipped existing: seeders/DatabaseSeeder.php already calls UserSeeder');
-
-            return;
-        }
-
-        $updated = preg_replace_callback(
-            '/(public\s+function\s+run\s*\([^)]*\)\s*(?::\s*void)?\s*\{\s*)/m',
-            fn (array $matches): string => rtrim($matches[1]).PHP_EOL.'        $this->call(UserSeeder::class);'.PHP_EOL,
-            $contents,
-            1,
-            $count,
-        );
-
-        if ($count === 0 || $updated === null) {
-            $this->write($output, 'warn', 'Could not update seeders/DatabaseSeeder.php. Add $this->call(UserSeeder::class); manually.');
-
-            return;
-        }
-
-        $this->filesystem->put($seederPath, $updated);
-        $this->write($output, 'line', 'Updated: seeders/DatabaseSeeder.php');
-    }
-
-    private function defaultDatabaseSeeder(): string
-    {
-        return <<<'PHP'
-<?php
-
-namespace Database\Seeders;
-
-use Illuminate\Database\Seeder;
-
-class DatabaseSeeder extends Seeder
-{
-    public function run(): void
-    {
-        $this->call(UserSeeder::class);
-    }
-}
 PHP;
     }
 

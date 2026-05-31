@@ -9,8 +9,8 @@ use InvalidArgumentException;
 /**
  * Stack Support Class
  *
- * Manages UI stack configuration and validation for the Laravel Starter Kit.
- * Currently supports Tailwind CSS as the primary UI stack.
+ * Manages UI stack validation for the Laravel Starter Kit.
+ * Currently supports Tailwind CSS only.
  *
  * @package Mwy\LaravelStarterKit\Support
  */
@@ -30,9 +30,7 @@ final class Stack
      */
     public static function available(): array
     {
-        return config('starter-kit.stacks', [
-            self::TAILWIND,
-        ]);
+        return [self::TAILWIND];
     }
 
     /**
@@ -42,7 +40,7 @@ final class Stack
      */
     public static function default(): string
     {
-        return config('starter-kit.default_stack', self::TAILWIND);
+        return self::TAILWIND;
     }
 
     /**
