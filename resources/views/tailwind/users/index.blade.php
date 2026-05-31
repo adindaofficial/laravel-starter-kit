@@ -55,98 +55,103 @@
             </div>
 
             <div class="p-4 sm:p-5">
-                <div class="starter-users-table-shell rounded-lg border border-slate-200 bg-white">
-                    <table id="usersTable" class="starter-datatable starter-users-table text-left text-sm" style="width: 100%;">
-                        <colgroup>
-                            <col style="width: 6%;">
-                            <col style="width: 30%;">
-                            <col style="width: 34%;">
-                            <col style="width: 18%;">
-                            <col style="width: 12%;">
-                        </colgroup>
-                        <thead>
-                            <tr>
-                                <th class="px-5 py-3 text-center">No</th>
-                                <th class="px-5 py-3">Nama</th>
-                                <th class="px-5 py-3">Email</th>
-                                <th class="px-5 py-3">Verifikasi</th>
-                                <th class="px-5 py-3 text-right">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-100">
-                            @foreach ($users as $user)
-                                <tr class="transition hover:bg-blue-50/50">
-                                    <td class="px-5 py-3 text-center">
-                                        <span data-row-number class="inline-flex h-8 min-w-8 items-center justify-center rounded-full bg-slate-100 px-2 text-xs font-bold text-slate-700 ring-1 ring-slate-200">{{ $loop->iteration }}</span>
-                                    </td>
-                                    <td class="px-5 py-3">
-                                        <div class="flex items-center gap-3">
-                                            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-100 text-sm font-bold text-blue-700 ring-4 ring-blue-50">
-                                                {{ strtoupper(substr($user->name, 0, 1)) }}
-                                            </span>
-                                            <span class="min-w-0 flex-1">
-                                                <span class="block truncate font-semibold text-slate-950">{{ $user->name }}</span>
-                                                <span class="block text-xs text-slate-500">Akun pengguna</span>
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td class="px-5 py-3">
-                                        <span class="block truncate text-slate-600">{{ $user->email }}</span>
-                                    </td>
-                                    <td class="px-5 py-3">
-                                        @if ($user->email_verified_at)
-                                            <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700">
-                                               <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-                                                Terverifikasi
-                                            </span>
-                                        @else
-                                            <span class="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600">
-                                                <span class="h-1.5 w-1.5 rounded-full bg-slate-400"></span>
-                                                Menunggu
-                                            </span>
-                                        @endif
-                                    </td>
-                                    <td class="px-5 py-3 text-right">
-                                        <div class="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 p-1 shadow-sm">
-                                            <button
-                                                type="button"
-                                                class="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-blue-200 bg-blue-50 text-blue-700 transition hover:bg-blue-100"
-                                                data-user-reset
-                                                data-action="{{ route('starter-kit.users.reset-password', $user) }}"
-                                                data-name="{{ $user->name }}"
-                                                title="Reset password"
-                                            >
-                                                <i data-lucide="key-round" class="h-4 w-4"></i>
-                                            </button>
-                                            <button
-                                                type="button"
-                                                class="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-amber-200 bg-amber-50 text-amber-700 transition hover:bg-amber-100"
-                                                data-user-edit
-                                                data-action="{{ route('starter-kit.users.update', $user) }}"
-                                                data-name="{{ $user->name }}"
-                                                data-email="{{ $user->email }}"
-                                                data-verified="{{ $user->email_verified_at ? '1' : '0' }}"
-                                                title="Edit user"
-                                            >
-                                                <i data-lucide="pencil" class="h-4 w-4"></i>
-                                            </button>
-                                            <button
-                                                type="button"
-                                                class="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-rose-200 bg-rose-50 text-rose-700 transition hover:bg-rose-100"
-                                                data-user-delete
-                                                data-action="{{ route('starter-kit.users.destroy', $user) }}"
-                                                data-name="{{ $user->name }}"
-                                                data-email="{{ $user->email }}"
-                                                title="Delete user"
-                                            >
-                                                <i data-lucide="trash-2" class="h-4 w-4"></i>
-                                            </button>
-                                        </div>
-                                    </td>
+                <div class="starter-users-table-shell overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+                    <div class="overflow-x-auto">
+                        <table id="usersTable" class="starter-datatable starter-users-table w-full text-left text-sm">
+                            <colgroup>
+                                <col style="width: 70px;">
+                                <col style="width: auto; min-width: 200px;">
+                                <col style="width: auto; min-width: 220px;">
+                                <col style="width: 150px;">
+                                <col style="width: 160px;">
+                            </colgroup>
+                            <thead class="bg-slate-50">
+                                <tr class="border-b border-slate-200">
+                                    <th class="px-4 py-3.5 text-center text-xs font-bold uppercase tracking-wide text-slate-600">No</th>
+                                    <th class="px-4 py-3.5 text-xs font-bold uppercase tracking-wide text-slate-600">Nama</th>
+                                    <th class="px-4 py-3.5 text-xs font-bold uppercase tracking-wide text-slate-600">Email</th>
+                                    <th class="px-4 py-3.5 text-center text-xs font-bold uppercase tracking-wide text-slate-600">Verifikasi</th>
+                                    <th class="px-4 py-3.5 text-center text-xs font-bold uppercase tracking-wide text-slate-600">Aksi</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 bg-white">
+                                @foreach ($users as $user)
+                                    <tr class="transition-colors duration-150 hover:bg-blue-50/40">
+                                        <td class="px-4 py-4 text-center align-middle">
+                                            <span data-row-number class="inline-flex h-7 min-w-[28px] items-center justify-center rounded-md bg-slate-100 px-2 text-xs font-bold text-slate-700">{{ $loop->iteration }}</span>
+                                        </td>
+                                        <td class="px-4 py-4 align-middle">
+                                            <div class="flex items-center gap-3">
+                                                <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-blue-600 text-sm font-bold text-white shadow-md">
+                                                    {{ strtoupper(substr($user->name, 0, 1)) }}
+                                                </span>
+                                                <div class="min-w-0 flex-1">
+                                                    <div class="truncate font-semibold text-slate-900">{{ $user->name }}</div>
+                                                    <div class="text-xs text-slate-500">Akun pengguna</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-4 py-4 align-middle">
+                                            <div class="flex items-center gap-2">
+                                                <i data-lucide="mail" class="h-4 w-4 shrink-0 text-slate-400"></i>
+                                                <span class="truncate text-slate-700">{{ $user->email }}</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-4 py-4 text-center align-middle">
+                                            @if ($user->email_verified_at)
+                                                <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700 ring-1 ring-emerald-200">
+                                                    <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+                                                    Terverifikasi
+                                                </span>
+                                            @else
+                                                <span class="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-3 py-1.5 text-xs font-semibold text-amber-700 ring-1 ring-amber-200">
+                                                    <span class="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
+                                                    Menunggu
+                                                </span>
+                                            @endif
+                                        </td>
+                                        <td class="px-4 py-4 text-center align-middle">
+                                            <div class="inline-flex items-center gap-1 rounded-lg bg-slate-50 p-1">
+                                                <button
+                                                    type="button"
+                                                    class="inline-flex h-8 w-8 items-center justify-center rounded-md bg-blue-50 text-blue-600 transition-all duration-150 hover:bg-blue-100 hover:shadow-sm active:scale-95"
+                                                    data-user-reset
+                                                    data-action="{{ route('starter-kit.users.reset-password', $user) }}"
+                                                    data-name="{{ $user->name }}"
+                                                    title="Reset password"
+                                                >
+                                                    <i data-lucide="key-round" class="h-4 w-4"></i>
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    class="inline-flex h-8 w-8 items-center justify-center rounded-md bg-amber-50 text-amber-600 transition-all duration-150 hover:bg-amber-100 hover:shadow-sm active:scale-95"
+                                                    data-user-edit
+                                                    data-action="{{ route('starter-kit.users.update', $user) }}"
+                                                    data-name="{{ $user->name }}"
+                                                    data-email="{{ $user->email }}"
+                                                    data-verified="{{ $user->email_verified_at ? '1' : '0' }}"
+                                                    title="Edit user"
+                                                >
+                                                    <i data-lucide="pencil" class="h-4 w-4"></i>
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    class="inline-flex h-8 w-8 items-center justify-center rounded-md bg-rose-50 text-rose-600 transition-all duration-150 hover:bg-rose-100 hover:shadow-sm active:scale-95"
+                                                    data-user-delete
+                                                    data-action="{{ route('starter-kit.users.destroy', $user) }}"
+                                                    data-name="{{ $user->name }}"
+                                                    data-email="{{ $user->email }}"
+                                                    title="Delete user"
+                                                >
+                                                    <i data-lucide="trash-2" class="h-4 w-4"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
