@@ -91,6 +91,7 @@ class StarterKitInstaller
      */
     protected function installFiles(string $stack, bool $force, ?callable $output): void
     {
+        // Copy Controllers
         $this->copyDirectory(
             $this->packagePath('resources/stubs/app/Http/Controllers'),
             app_path('Http/Controllers'),
@@ -98,6 +99,7 @@ class StarterKitInstaller
             $output
         );
 
+        // Copy Layouts
         $this->copyDirectory(
             $this->packagePath("resources/views/{$stack}/layouts"),
             resource_path('views/layouts'),
@@ -105,6 +107,7 @@ class StarterKitInstaller
             $output
         );
 
+        // Copy Users Views
         $this->copyDirectory(
             $this->packagePath("resources/views/{$stack}/users"),
             resource_path('views/users'),
@@ -112,9 +115,18 @@ class StarterKitInstaller
             $output
         );
 
+        // Copy Documentation Views
         $this->copyDirectory(
             $this->packagePath("resources/views/{$stack}/documentation"),
             resource_path('views/documentation'),
+            $force,
+            $output
+        );
+
+        // Copy Database Seeders
+        $this->copyDirectory(
+            $this->packagePath('database/seeders'),
+            database_path('seeders'),
             $force,
             $output
         );
