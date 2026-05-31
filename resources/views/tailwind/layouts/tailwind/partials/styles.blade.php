@@ -58,6 +58,18 @@
         background: rgba(191, 219, 254, .55);
     }
 
+    .starter-sidebar-details > summary {
+        list-style: none;
+    }
+
+    .starter-sidebar-details > summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .starter-sidebar-details[open] .starter-sidebar-chevron {
+        transform: rotate(180deg);
+    }
+
     .dt-container {
         color: #334155;
         width: 100%;
@@ -67,6 +79,27 @@
     .dt-container {
         color: #334155;
         width: 100%;
+    }
+
+    .dt-container .dt-layout-table {
+        background: transparent;
+        border: 0;
+        border-radius: .75rem;
+        box-shadow: none;
+        margin: 0;
+        overflow-x: auto;
+        padding: 0;
+        width: 100%;
+    }
+
+    .dt-container .dt-layout-table .dt-layout-cell {
+        display: block;
+        width: 100%;
+    }
+
+    .dt-container table.dataTable {
+        margin: 0 !important;
+        width: 100% !important;
     }
 
     .starter-dt-toolbar,
@@ -106,6 +139,17 @@
 
     .dt-container .dt-layout-row:last-child {
         margin: 1rem 0 0;
+    }
+
+    .dt-container .dt-layout-row.dt-layout-table {
+        background: transparent;
+        border: 0;
+        border-radius: .75rem;
+        box-shadow: none;
+        display: block;
+        margin: 0;
+        overflow-x: auto;
+        padding: 0;
     }
 
     .dt-container .dt-input {
@@ -191,11 +235,18 @@
     .starter-users-table {
         border-collapse: separate;
         border-spacing: 0;
+        min-width: 920px;
         table-layout: fixed;
+        width: 100% !important;
     }
 
     .starter-users-table thead th {
         white-space: nowrap;
+    }
+
+    .starter-users-table th,
+    .starter-users-table td {
+        box-sizing: border-box;
     }
 
     .starter-users-table tbody td {
@@ -207,7 +258,7 @@
     }
 
     .starter-users-table .starter-col-actions {
-        text-align: left !important;
+        text-align: right !important;
     }
 
     .dt-container .dt-search label,

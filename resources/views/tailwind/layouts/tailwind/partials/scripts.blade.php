@@ -84,18 +84,39 @@
 
                 if (table.id === 'usersTable') {
                     columnDefs.push(
-                        { targets: 0, width: '4.25rem', className: 'starter-col-no' },
-                        { targets: 1, width: '30%' },
+                        { targets: 0, width: '6%', className: 'starter-col-no', orderable: false, searchable: false },
+                        { targets: 1, width: '29%' },
                         { targets: 2, width: '32%' },
-                        { targets: 3, width: '18%' },
-                        { targets: 4, width: '9.5rem', className: 'starter-col-actions' }
+                        { targets: 3, width: '19%' },
+                        { targets: 4, width: '14%', className: 'starter-col-actions' }
                     );
                 }
 
-                window.StarterKit.dataTable('#' + table.id, {
-                    order: [[0, 'asc']],
+                const dataTableOptions = {
+                    order: table.id === 'usersTable' ? [[1, 'asc']] : [[0, 'asc']],
                     columnDefs: columnDefs
-                });
+                };
+
+                if (table.id === 'usersTable') {
+                    dataTableOptions.drawCallback = function () {
+                        const api = this.api();
+                        const pageInfo = api.page.info();
+
+                        api.column(0, { page: 'current' }).nodes().each(function (cell, index) {
+                            const number = cell.querySelector('[data-row-number]');
+
+                            if (number) {
+                                number.textContent = pageInfo.start + index + 1;
+                            }
+                        });
+
+                        if (window.lucide) {
+                            window.lucide.createIcons();
+                        }
+                    };
+                }
+
+                window.StarterKit.dataTable('#' + table.id, dataTableOptions);
             });
         },
         openModal: function (id) {
