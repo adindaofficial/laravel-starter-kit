@@ -23,13 +23,6 @@ class StarterKitInstaller
     use InstallsFiles;
 
     /**
-     * Legacy route require pattern for removal
-     *
-     * @var string
-     */
-    private const LEGACY_ROUTE_REQUIRE_PATTERN = '/^\s*require\s+__DIR__\s*\.\s*[\'"]\/starter-kit\.php[\'"]\s*;\s*[\r\n]*/m';
-
-    /**
      * Route block markers
      *
      * @var string
@@ -164,19 +157,22 @@ class StarterKitInstaller
     private function appendStarterKitRoutesToWeb(?callable $output = null): void
     {
         $routePath = base_path('routes/web.php');
+        $packageRoutePath = $this->packagePath('routes/web.php');
+
         $this->ensureDirectoryExists(dirname($routePath));
 
+        // If web.php doesn't exist, copy from package
         if (! $this->filesystem->exists($routePath)) {
-            $this->createDefaultWebRoutes($routePath);
+            $this->filesystem->copy($packageRoutePath, $routePath);
             $this->write($output, 'line', 'Created: routes/web.php');
+            return;
         }
 
         $contents = $this->filesystem->get($routePath);
-        $contents = $this->removeLegacyStarterKitRouteLoader($contents, $output);
 
         // Check if routes already exist
         if (str_contains($contents, self::ROUTE_BLOCK_START) && str_contains($contents, self::ROUTE_BLOCK_END)) {
-            $this->updateExistingRouteBlock($routePath, $contents, $output);
+            $this->updateExistingRouteBlock($routePath, $contents, $packageRoutePath, $output);
             return;
         }
 
@@ -185,13 +181,36 @@ class StarterKitInstaller
             return;
         }
 
-        // Add use statements if needed
-        $contents = $this->ensureUseStatements($contents);
+        // Merge routes from package
+        $this->mergeRoutesFromPackage($routePath, $contents, $packageRoutePath, $output);
+    }
 
-        // Add route block
-        $routeBlock = $this->getRouteBlockOnly();
+    /**
+     * Merge routes from package into existing web.php
+     *
+     * @param  string  $routePath
+     * @param  string  $contents
+     * @param  string  $packageRoutePath
+     * @param  callable|null  $output
+     * @return void
+     */
+    private function mergeRoutesFromPackage(
+        string $routePath,
+        string $contents,
+        string $packageRoutePath,
+        ?callable $output
+    ): void {
+        $packageContents = $this->filesystem->get($packageRoutePath);
+        
+        // Extract use statements and route block from package
+        $useStatements = $this->extractUseStatements($packageContents);
+        $routeBlock = $this->extractRouteBlock($packageContents);
+
+        // Add missing use statements
+        $contents = $this->addMissingUseStatements($contents, $useStatements);
+
+        // Append route block
         $contents = rtrim($contents);
-
         if (str_ends_with($contents, '?>')) {
             $contents = rtrim(substr($contents, 0, -2));
         }
@@ -201,28 +220,22 @@ class StarterKitInstaller
     }
 
     /**
-     * Create default web routes file.
-     *
-     * @param  string  $routePath
-     * @return void
-     */
-    private function createDefaultWebRoutes(string $routePath): void
-    {
-        $defaultContent = $this->starterKitRouteBlock();
-        $this->filesystem->put($routePath, $defaultContent);
-    }
-
-    /**
      * Update existing route block in web.php
      *
      * @param  string  $routePath
      * @param  string  $contents
+     * @param  string  $packageRoutePath
      * @param  callable|null  $output
      * @return void
      */
-    private function updateExistingRouteBlock(string $routePath, string $contents, ?callable $output): void
-    {
-        $routeBlock = $this->getRouteBlockOnly();
+    private function updateExistingRouteBlock(
+        string $routePath,
+        string $contents,
+        string $packageRoutePath,
+        ?callable $output
+    ): void {
+        $packageContents = $this->filesystem->get($packageRoutePath);
+        $routeBlock = $this->extractRouteBlock($packageContents);
 
         $updated = preg_replace(
             '/' . preg_quote(self::ROUTE_BLOCK_START, '/') . '.*?' . preg_quote(self::ROUTE_BLOCK_END, '/') . '/s',
@@ -241,175 +254,48 @@ class StarterKitInstaller
     }
 
     /**
-     * Ensure required use statements exist in the content.
+     * Extract use statements from content.
      *
-     * @param  string  $contents
-     * @return string
+     * @param  string  $content
+     * @return array<int, string>
      */
-    private function ensureUseStatements(string $contents): string
+    private function extractUseStatements(string $content): array
     {
-        $requiredUseStatements = [
-            'App\Http\Controllers\UserController',
-            'Illuminate\Support\Facades\Route',
-        ];
-
-        $lines = explode(PHP_EOL, $contents);
-        $existingUseStatements = [];
-        $phpTagIndex = -1;
-        $lastUseIndex = -1;
-        $firstNonUseIndex = -1;
-
-        // Analyze existing file structure
-        foreach ($lines as $index => $line) {
-            $trimmedLine = trim($line);
-            
-            // Find <?php tag
-            if (str_starts_with($trimmedLine, '<?php')) {
-                $phpTagIndex = $index;
-                continue;
-            }
-            
-            // Find existing use statements
-            if (preg_match('/^use\s+([^;]+);/', $trimmedLine, $matches)) {
-                $lastUseIndex = $index;
-                $existingUseStatements[] = trim($matches[1]);
-                continue;
-            }
-            
-            // Find first non-use, non-empty, non-comment line
-            if ($firstNonUseIndex === -1 && 
-                !empty($trimmedLine) && 
-                !str_starts_with($trimmedLine, '//') &&
-                !str_starts_with($trimmedLine, '/*') &&
-                !str_starts_with($trimmedLine, '*') &&
-                !str_starts_with($trimmedLine, '|') &&
-                $lastUseIndex !== -1) {
-                $firstNonUseIndex = $index;
-            }
-        }
-
-        // Determine which use statements are missing
-        $missingUseStatements = [];
-        foreach ($requiredUseStatements as $useClass) {
-            $found = false;
-            
-            foreach ($existingUseStatements as $existing) {
-                if (trim($existing) === trim($useClass)) {
-                    $found = true;
-                    break;
-                }
-            }
-            
-            if (!$found) {
-                $missingUseStatements[] = $useClass;
-            }
-        }
-
-        // If no missing statements, return original content
-        if (empty($missingUseStatements)) {
-            return $contents;
-        }
-
-        // Determine insertion point
-        $insertIndex = $phpTagIndex + 1;
-        $needsBlankLineBefore = false;
-        $needsBlankLineAfter = false;
-
-        if ($lastUseIndex > 0) {
-            // Insert after last existing use statement
-            $insertIndex = $lastUseIndex + 1;
-        } else {
-            // Insert after <?php tag
-            $insertIndex = $phpTagIndex + 1;
-            $needsBlankLineBefore = true;
-            $needsBlankLineAfter = true;
-        }
-
-        // Build use statement lines
-        $useLines = [];
-        
-        if ($needsBlankLineBefore && !empty(trim($lines[$insertIndex] ?? ''))) {
-            $useLines[] = '';
-        }
-
-        foreach ($missingUseStatements as $useClass) {
-            $useLines[] = "use {$useClass};";
-        }
-
-        if ($needsBlankLineAfter) {
-            $useLines[] = '';
-        }
-
-        // Insert the use statements
-        array_splice($lines, $insertIndex, 0, $useLines);
-
-        return implode(PHP_EOL, $lines);
-    }
-
-    /**
-     * Get only the route block without use statements and comments.
-     *
-     * @return string
-     */
-    private function getRouteBlockOnly(): string
-    {
-        $fullContent = $this->starterKitRouteBlock();
-        
-        // Remove <?php tag if exists
-        if (str_starts_with($fullContent, '<?php')) {
-            $fullContent = trim(substr($fullContent, 5));
-        }
-
-        $lines = explode(PHP_EOL, $fullContent);
-        $routeLines = [];
-        $foundRouteBlock = false;
-        $inCommentBlock = false;
+        $lines = explode(PHP_EOL, $content);
+        $useStatements = [];
 
         foreach ($lines as $line) {
             $trimmedLine = trim($line);
-            
-            // Skip empty lines at the beginning
-            if (!$foundRouteBlock && empty($trimmedLine)) {
-                continue;
+            if (preg_match('/^use\s+([^;]+);$/', $trimmedLine, $matches)) {
+                $useStatements[] = trim($matches[1]);
             }
+        }
 
-            // Skip use statements
-            if (str_starts_with($trimmedLine, 'use ')) {
-                continue;
-            }
+        return $useStatements;
+    }
 
-            // Handle comment blocks
-            if (str_starts_with($trimmedLine, '/*')) {
-                $inCommentBlock = true;
-                continue;
-            }
+    /**
+     * Extract route block from content.
+     *
+     * @param  string  $content
+     * @return string
+     */
+    private function extractRouteBlock(string $content): string
+    {
+        $lines = explode(PHP_EOL, $content);
+        $routeLines = [];
+        $inBlock = false;
 
-            if ($inCommentBlock) {
-                if (str_contains($trimmedLine, '*/')) {
-                    $inCommentBlock = false;
-                }
-                continue;
-            }
+        foreach ($lines as $line) {
+            $trimmedLine = trim($line);
 
-            // Skip single-line comments and doc lines before route block
-            if (!$foundRouteBlock && (
-                str_starts_with($trimmedLine, '//') ||
-                str_starts_with($trimmedLine, '*') ||
-                str_starts_with($trimmedLine, '|')
-            )) {
-                continue;
-            }
-
-            // Found the route block start
             if (str_contains($trimmedLine, self::ROUTE_BLOCK_START)) {
-                $foundRouteBlock = true;
+                $inBlock = true;
             }
 
-            // Collect route block lines
-            if ($foundRouteBlock) {
+            if ($inBlock) {
                 $routeLines[] = $line;
-                
-                // Stop at route block end
+
                 if (str_contains($trimmedLine, self::ROUTE_BLOCK_END)) {
                     break;
                 }
@@ -419,19 +305,69 @@ class StarterKitInstaller
         return implode(PHP_EOL, $routeLines);
     }
 
-    private function removeLegacyStarterKitRouteLoader(string $contents, ?callable $output = null): string
+    /**
+     * Add missing use statements to content.
+     *
+     * @param  string  $content
+     * @param  array<int, string>  $requiredUseStatements
+     * @return string
+     */
+    private function addMissingUseStatements(string $content, array $requiredUseStatements): string
     {
-        $updated = preg_replace(self::LEGACY_ROUTE_REQUIRE_PATTERN, '', $contents, -1, $count);
+        $existingUseStatements = $this->extractUseStatements($content);
+        $missingUseStatements = [];
 
-        if ($updated !== null && $count > 0) {
-            $this->write($output, 'line', 'Removed legacy routes/starter-kit.php loader from routes/web.php');
-
-            return $updated;
+        foreach ($requiredUseStatements as $required) {
+            if (!in_array($required, $existingUseStatements, true)) {
+                $missingUseStatements[] = $required;
+            }
         }
 
-        return $contents;
+        if (empty($missingUseStatements)) {
+            return $content;
+        }
+
+        $lines = explode(PHP_EOL, $content);
+        $phpTagIndex = -1;
+        $lastUseIndex = -1;
+
+        foreach ($lines as $index => $line) {
+            $trimmedLine = trim($line);
+
+            if (str_starts_with($trimmedLine, '<?php')) {
+                $phpTagIndex = $index;
+            }
+
+            if (preg_match('/^use\s+/', $trimmedLine)) {
+                $lastUseIndex = $index;
+            }
+        }
+
+        $insertIndex = $lastUseIndex > 0 ? $lastUseIndex + 1 : $phpTagIndex + 1;
+        $useLines = [];
+
+        // Add blank line if inserting after <?php
+        if ($lastUseIndex === -1 && $phpTagIndex >= 0) {
+            if (!empty(trim($lines[$insertIndex] ?? ''))) {
+                $useLines[] = '';
+            }
+        }
+
+        foreach ($missingUseStatements as $useClass) {
+            $useLines[] = "use {$useClass};";
+        }
+
+        array_splice($lines, $insertIndex, 0, $useLines);
+
+        return implode(PHP_EOL, $lines);
     }
 
+    /**
+     * Remove legacy starter kit route file.
+     *
+     * @param  callable|null  $output
+     * @return void
+     */
     private function removeLegacyStarterKitRouteFile(?callable $output = null): void
     {
         $routeFile = base_path('routes/starter-kit.php');
@@ -444,7 +380,6 @@ class StarterKitInstaller
 
         if (! str_contains($contents, 'Laravel Starter Kit Routes')) {
             $this->write($output, 'warn', 'Skipped removing routes/starter-kit.php because it does not look like a starter kit generated file.');
-
             return;
         }
 
@@ -493,29 +428,18 @@ class StarterKitInstaller
         $this->filesystem->deleteDirectory($path);
     }
 
-    private function starterKitRouteBlock(): string
-    {
-        $routePath = $this->packagePath('routes/web.php');
-
-        if (! $this->filesystem->exists($routePath)) {
-            throw new RuntimeException('Starter kit route file not found: routes/web.php');
-        }
-
-        $contents = trim($this->filesystem->get($routePath));
-
-        if (str_starts_with($contents, '<?php')) {
-            $contents = trim(substr($contents, 5));
-        }
-
-        return $contents;
-    }
-
+    /**
+     * Get package path.
+     *
+     * @param  string  $path
+     * @return string
+     */
     private function packagePath(string $path = ''): string
     {
         $basePath = dirname(__DIR__, 2);
 
         return $path === ''
             ? $basePath
-            : $basePath.DIRECTORY_SEPARATOR.$path;
+            : $basePath . DIRECTORY_SEPARATOR . $path;
     }
 }
