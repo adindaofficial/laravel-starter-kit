@@ -249,41 +249,59 @@ class StarterKitInstaller
     private function ensureUseStatements(string $contents): string
     {
         $requiredUseStatements = [
-            'use App\Http\Controllers\UserController;',
-            'use Illuminate\Support\Facades\Route;',
+            'App\Http\Controllers\UserController',
+            'Illuminate\Support\Facades\Route',
         ];
 
         $lines = explode(PHP_EOL, $contents);
-        $phpTagIndex = 0;
-        $lastUseIndex = 0;
+        $existingUseStatements = [];
+        $phpTagIndex = -1;
+        $lastUseIndex = -1;
+        $firstNonUseIndex = -1;
 
-        // Find <?php tag and last use statement
+        // Analyze existing file structure
         foreach ($lines as $index => $line) {
             $trimmedLine = trim($line);
             
+            // Find <?php tag
             if (str_starts_with($trimmedLine, '<?php')) {
                 $phpTagIndex = $index;
+                continue;
             }
             
-            if (str_starts_with($trimmedLine, 'use ')) {
+            // Find existing use statements
+            if (preg_match('/^use\s+([^;]+);/', $trimmedLine, $matches)) {
                 $lastUseIndex = $index;
+                $existingUseStatements[] = trim($matches[1]);
+                continue;
+            }
+            
+            // Find first non-use, non-empty, non-comment line
+            if ($firstNonUseIndex === -1 && 
+                !empty($trimmedLine) && 
+                !str_starts_with($trimmedLine, '//') &&
+                !str_starts_with($trimmedLine, '/*') &&
+                !str_starts_with($trimmedLine, '*') &&
+                !str_starts_with($trimmedLine, '|') &&
+                $lastUseIndex !== -1) {
+                $firstNonUseIndex = $index;
             }
         }
 
-        // Check which use statements are missing
+        // Determine which use statements are missing
         $missingUseStatements = [];
-        foreach ($requiredUseStatements as $useStatement) {
+        foreach ($requiredUseStatements as $useClass) {
             $found = false;
             
-            foreach ($lines as $line) {
-                if (trim($line) === $useStatement) {
+            foreach ($existingUseStatements as $existing) {
+                if (trim($existing) === trim($useClass)) {
                     $found = true;
                     break;
                 }
             }
             
             if (!$found) {
-                $missingUseStatements[] = $useStatement;
+                $missingUseStatements[] = $useClass;
             }
         }
 
@@ -292,24 +310,44 @@ class StarterKitInstaller
             return $contents;
         }
 
-        // Insert missing use statements after last use or after <?php
-        $insertIndex = $lastUseIndex > 0 ? $lastUseIndex + 1 : $phpTagIndex + 1;
+        // Determine insertion point
+        $insertIndex = $phpTagIndex + 1;
+        $needsBlankLineBefore = false;
+        $needsBlankLineAfter = false;
 
-        // Add empty line before use statements if inserting after <?php
-        if ($lastUseIndex === 0 && $insertIndex > 0) {
-            if (!empty(trim($lines[$insertIndex] ?? ''))) {
-                array_splice($lines, $insertIndex, 0, ['']);
-                $insertIndex++;
-            }
+        if ($lastUseIndex > 0) {
+            // Insert after last existing use statement
+            $insertIndex = $lastUseIndex + 1;
+        } else {
+            // Insert after <?php tag
+            $insertIndex = $phpTagIndex + 1;
+            $needsBlankLineBefore = true;
+            $needsBlankLineAfter = true;
         }
 
-        array_splice($lines, $insertIndex, 0, $missingUseStatements);
+        // Build use statement lines
+        $useLines = [];
+        
+        if ($needsBlankLineBefore && !empty(trim($lines[$insertIndex] ?? ''))) {
+            $useLines[] = '';
+        }
+
+        foreach ($missingUseStatements as $useClass) {
+            $useLines[] = "use {$useClass};";
+        }
+
+        if ($needsBlankLineAfter) {
+            $useLines[] = '';
+        }
+
+        // Insert the use statements
+        array_splice($lines, $insertIndex, 0, $useLines);
 
         return implode(PHP_EOL, $lines);
     }
 
     /**
-     * Get only the route block without use statements.
+     * Get only the route block without use statements and comments.
      *
      * @return string
      */
@@ -324,24 +362,54 @@ class StarterKitInstaller
 
         $lines = explode(PHP_EOL, $fullContent);
         $routeLines = [];
-        $inRouteBlock = false;
+        $foundRouteBlock = false;
+        $inCommentBlock = false;
 
         foreach ($lines as $line) {
             $trimmedLine = trim($line);
             
-            // Skip use statements and empty lines before route block
-            if (str_starts_with($trimmedLine, 'use ') || 
-                str_starts_with($trimmedLine, '/*') ||
-                str_starts_with($trimmedLine, '*') ||
-                str_starts_with($trimmedLine, '|')) {
+            // Skip empty lines at the beginning
+            if (!$foundRouteBlock && empty($trimmedLine)) {
                 continue;
             }
 
-            // Start collecting from route block marker
-            if (str_contains($trimmedLine, self::ROUTE_BLOCK_START) || $inRouteBlock) {
-                $inRouteBlock = true;
+            // Skip use statements
+            if (str_starts_with($trimmedLine, 'use ')) {
+                continue;
+            }
+
+            // Handle comment blocks
+            if (str_starts_with($trimmedLine, '/*')) {
+                $inCommentBlock = true;
+                continue;
+            }
+
+            if ($inCommentBlock) {
+                if (str_contains($trimmedLine, '*/')) {
+                    $inCommentBlock = false;
+                }
+                continue;
+            }
+
+            // Skip single-line comments and doc lines before route block
+            if (!$foundRouteBlock && (
+                str_starts_with($trimmedLine, '//') ||
+                str_starts_with($trimmedLine, '*') ||
+                str_starts_with($trimmedLine, '|')
+            )) {
+                continue;
+            }
+
+            // Found the route block start
+            if (str_contains($trimmedLine, self::ROUTE_BLOCK_START)) {
+                $foundRouteBlock = true;
+            }
+
+            // Collect route block lines
+            if ($foundRouteBlock) {
                 $routeLines[] = $line;
                 
+                // Stop at route block end
                 if (str_contains($trimmedLine, self::ROUTE_BLOCK_END)) {
                     break;
                 }
